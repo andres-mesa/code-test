@@ -13,6 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Cliente
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="idCliente", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $idcliente;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
@@ -47,14 +56,20 @@ class Cliente
      */
     private $password;
 
+
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="idCliente", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @return int
      */
-    private $idcliente;
+    public function getIdcliente() {
+        return $this->idcliente;
+    }
+
+    /**
+     * @param int $idcliente
+     */
+    public function setIdcliente($idcliente) {
+        $this->idcliente = $idcliente;
+    }
 
     /**
      * @return string
@@ -125,22 +140,5 @@ class Cliente
     public function setPassword($password) {
         $this->password = $password;
     }
-
-    /**
-     * @return int
-     */
-    public function getIdcliente() {
-        return $this->idcliente;
-    }
-
-    /**
-     * @param int $idcliente
-     */
-    public function setIdcliente($idcliente) {
-        $this->idcliente = $idcliente;
-    }
-
-
-
 }
 

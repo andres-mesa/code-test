@@ -12,19 +12,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PedidosProductos
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="unidades", type="integer", nullable=false)
-     */
-    private $unidades = '1';
+
 
     /**
      * @var integer
      *
      * @ORM\Column(name="idPedidoProducto", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $idpedidoproducto;
 
@@ -67,6 +62,13 @@ class PedidosProductos
      * })
      */
     private $idtienda;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="unidades", type="integer", nullable=false)
+     */
+    private $unidades = '1';
 
     /**
      * @return int

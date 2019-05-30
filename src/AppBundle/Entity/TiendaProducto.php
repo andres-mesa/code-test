@@ -17,7 +17,7 @@ class TiendaProducto
      *
      * @ORM\Column(name="idTiendaProducto", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $idtiendaproducto;
 
@@ -82,7 +82,5 @@ class TiendaProducto
     public function setIdtienda($idtienda) {
         $this->idtienda = $idtienda;
     }
-
-
 }
 

@@ -13,6 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Shopper
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="idShopper", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $idshopper;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=50, nullable=true)
@@ -20,13 +29,18 @@ class Shopper
     private $nombre;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="idShopper", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @param int $idshopper
      */
-    private $idshopper;
+    public function setIdshopper($idshopper) {
+        $this->idshopper = $idshopper;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdshopper() {
+        return $this->idshopper;
+    }
 
     /**
      * @return string
@@ -40,20 +54,6 @@ class Shopper
      */
     public function setNombre($nombre) {
         $this->nombre = $nombre;
-    }
-
-    /**
-     * @return int
-     */
-    public function getIdshopper() {
-        return $this->idshopper;
-    }
-
-    /**
-     * @param int $idshopper
-     */
-    public function setIdshopper($idshopper) {
-        $this->idshopper = $idshopper;
     }
 
 

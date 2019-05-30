@@ -13,6 +13,25 @@ use Doctrine\ORM\Mapping as ORM;
 class Pedido
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="idPedido", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $idpedido;
+
+    /**
+     * @var \AppBundle\Entity\Cliente
+     *
+     * @ORM\ManyToOne(targetEntity="Cliente")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idCliente", referencedColumnName="idCliente")
+     * })
+     */
+    private $idcliente;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="nombreCompleto", type="string", length=255, nullable=true)
@@ -76,23 +95,19 @@ class Pedido
     private $origen;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="idPedido", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @return Cliente
      */
-    private $idpedido;
+
+    public function getIdcliente() {
+        return $this->idcliente;
+    }
 
     /**
-     * @var \AppBundle\Entity\Cliente
-     *
-     * @ORM\ManyToOne(targetEntity="Cliente")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idCliente", referencedColumnName="idCliente")
-     * })
+     * @param Cliente $idcliente
      */
-    private $idcliente;
+    public function setIdcliente($idcliente) {
+        $this->idcliente = $idcliente;
+    }
 
     /**
      * @return string
@@ -220,19 +235,6 @@ class Pedido
         $this->idpedido = $idpedido;
     }
 
-    /**
-     * @return Cliente
-     */
-    public function getIdcliente() {
-        return $this->idcliente;
-    }
-
-    /**
-     * @param Cliente $idcliente
-     */
-    public function setIdcliente($idcliente) {
-        $this->idcliente = $idcliente;
-    }
 
     /**
      * @return string

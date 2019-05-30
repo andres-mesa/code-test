@@ -13,6 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Producto
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="idProducto", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $idproducto;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
@@ -34,13 +43,11 @@ class Producto
     private $precio = '0.00';
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="idProducto", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @param int $idproducto
      */
-    private $idproducto;
+    public function setIdproducto($idproducto) {
+        $this->idproducto = $idproducto;
+    }
 
     /**
      * @return string
@@ -90,14 +97,6 @@ class Producto
     public function getIdproducto() {
         return $this->idproducto;
     }
-
-    /**
-     * @param int $idproducto
-     */
-    public function setIdproducto($idproducto) {
-        $this->idproducto = $idproducto;
-    }
-
 
 }
 

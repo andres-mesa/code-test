@@ -13,6 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Tienda
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="idTienda", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $idtienda;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
@@ -27,14 +36,18 @@ class Tienda
     private $direccion;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="idTienda", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @return int
      */
-    private $idtienda;
+    public function getIdtienda() {
+        return $this->idtienda;
+    }
 
+    /**
+     * @param int $idtienda
+     */
+    public function setIdtienda($idtienda) {
+        $this->idtienda = $idtienda;
+    }
     /**
      * @return string
      */
@@ -62,21 +75,5 @@ class Tienda
     public function setDireccion($direccion) {
         $this->direccion = $direccion;
     }
-
-    /**
-     * @return int
-     */
-    public function getIdtienda() {
-        return $this->idtienda;
-    }
-
-    /**
-     * @param int $idtienda
-     */
-    public function setIdtienda($idtienda) {
-        $this->idtienda = $idtienda;
-    }
-
-
 }
 
