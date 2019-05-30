@@ -38,7 +38,7 @@ class ApiController extends Controller
 
 
 
-            var_dump($pedido);
+            //var_dump($pedido);
 
 
             $entityManager = $this->getDoctrine()->getManager();

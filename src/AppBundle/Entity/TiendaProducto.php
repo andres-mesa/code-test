@@ -15,11 +15,11 @@ class TiendaProducto
     /**
      * @var integer
      *
-     * @ORM\Column(name="idTiendaProdcuto", type="integer")
+     * @ORM\Column(name="idTiendaProducto", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idtiendaprodcuto;
+    private $idtiendaproducto;
 
     /**
      * @var \AppBundle\Entity\Producto
@@ -51,7 +51,7 @@ class TiendaProducto
     /**
      * @param int $idtiendaprodcuto
      */
-    public function setIdtiendaprodcuto($idtiendaprodcuto) {
+    public function setIdtiendaproducto($idtiendaprodcuto) {
         $this->idtiendaprodcuto = $idtiendaprodcuto;
     }
 
