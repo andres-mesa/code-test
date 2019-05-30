@@ -29,9 +29,9 @@ class PedidosProductos
     private $idpedidoproducto;
 
     /**
-     * @var \AppBundle\Entity\Pedidos
+     * @var \AppBundle\Entity\Pedido
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pedidos")
+     * @ORM\ManyToOne(targetEntity="Pedido")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idPedido", referencedColumnName="idPedido")
      * })
@@ -39,9 +39,9 @@ class PedidosProductos
     private $idpedido;
 
     /**
-     * @var \AppBundle\Entity\Productos
+     * @var \AppBundle\Entity\Producto
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Productos")
+     * @ORM\ManyToOne(targetEntity="Producto")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idProducto", referencedColumnName="idProducto")
      * })
@@ -97,28 +97,28 @@ class PedidosProductos
     }
 
     /**
-     * @return Pedidos
+     * @return Pedido
      */
     public function getIdpedido() {
         return $this->idpedido;
     }
 
     /**
-     * @param Pedidos $idpedido
+     * @param Pedido $idpedido
      */
     public function setIdpedido($idpedido) {
         $this->idpedido = $idpedido;
     }
 
     /**
-     * @return Productos
+     * @return Producto
      */
     public function getIdproducto() {
         return $this->idproducto;
     }
 
     /**
-     * @param Productos $idproducto
+     * @param Producto $idproducto
      */
     public function setIdproducto($idproducto) {
         $this->idproducto = $idproducto;
@@ -151,7 +151,5 @@ class PedidosProductos
     public function setIdtienda($idtienda) {
         $this->idtienda = $idtienda;
     }
-
-
 }
 

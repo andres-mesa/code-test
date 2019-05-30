@@ -6,21 +6,21 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PedidosType extends AbstractType
+class ProductoType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nombrecompleto')->add('email')->add('telefono')->add('direccionentrega')->add('fechacompra')->add('fechaentrega')->add('idfranjaentrega')->add('importetotal')->add('idcliente');
+        $builder->add('nombre')->add('descripcion')->add('precio');
     }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Pedidos'
+            'data_class' => 'AppBundle\Entity\Producto'
         ));
     }
 
@@ -29,7 +29,7 @@ class PedidosType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_pedidos';
+        return 'appbundle_producto';
     }
 
 

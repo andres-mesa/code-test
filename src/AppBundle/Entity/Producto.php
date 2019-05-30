@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Productos
  *
- * @ORM\Table(name="productos")
+ * @ORM\Table(name="producto")
  * @ORM\Entity
  */
-class Productos
+class Producto
 {
     /**
      * @var string

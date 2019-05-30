@@ -22,9 +22,9 @@ class TiendaProducto
     private $idtiendaprodcuto;
 
     /**
-     * @var \AppBundle\Entity\Productos
+     * @var \AppBundle\Entity\Producto
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Productos")
+     * @ORM\ManyToOne(targetEntity="Producto")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idProducto", referencedColumnName="idProducto")
      * })
@@ -56,14 +56,14 @@ class TiendaProducto
     }
 
     /**
-     * @return Productos
+     * @return Producto
      */
     public function getIdproducto() {
         return $this->idproducto;
     }
 
     /**
-     * @param Productos $idproducto
+     * @param Producto $idproducto
      */
     public function setIdproducto($idproducto) {
         $this->idproducto = $idproducto;

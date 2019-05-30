@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Pedidos
  *
- * @ORM\Table(name="pedidos", indexes={@ORM\Index(name="idCliente", columns={"idCliente"})})
+ * @ORM\Table(name="pedido", indexes={@ORM\Index(name="idCliente", columns={"idCliente"})})
  * @ORM\Entity
  */
-class Pedidos
+class Pedido
 {
     /**
      * @var string
@@ -69,6 +69,13 @@ class Pedidos
     private $importetotal;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="origenPedido", type="integer", length=1, nullable=true)
+     */
+    private $origen;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="idPedido", type="integer")
@@ -78,9 +85,9 @@ class Pedidos
     private $idpedido;
 
     /**
-     * @var \AppBundle\Entity\Clientes
+     * @var \AppBundle\Entity\Cliente
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Clientes")
+     * @ORM\ManyToOne(targetEntity="Cliente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idCliente", referencedColumnName="idCliente")
      * })
@@ -214,17 +221,31 @@ class Pedidos
     }
 
     /**
-     * @return Clientes
+     * @return Cliente
      */
     public function getIdcliente() {
         return $this->idcliente;
     }
 
     /**
-     * @param Clientes $idcliente
+     * @param Cliente $idcliente
      */
     public function setIdcliente($idcliente) {
         $this->idcliente = $idcliente;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrigen() {
+        return $this->origen;
+    }
+
+    /**
+     * @param string $origen
+     */
+    public function setOrigen($origen) {
+        $this->origen = $origen;
     }
 
 
