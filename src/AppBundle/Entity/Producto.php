@@ -45,25 +45,36 @@ class Producto
 
     /**
      * Un Producto se encuentra en muchas lineas de pedido.
-     * @ORM\OneToMany(targetEntity="PedidosProductos", mappedBy="idProducto")
+     * @ORM\OneToMany(targetEntity="LineasPedido", mappedBy="producto")
      */
-    private $pedidosProductos;
+    private $lineasPedido;
 
     /**
-     * Muchos Productos estan en muchas tiendas.
-     * @ORM\ManyToMany(targetEntity="Tienda", inversedBy="productos")
-     * @ORM\JoinTable(name="productos_tiendas")
+     * Un Producto se encuentra en muchas Tiendas.
+     * @ORM\OneToMany(targetEntity="TiendasProductos", mappedBy="tienda")
      */
-    private $tiendas;
+    private $tiendasProductos;
 
+    /**
+     * Producto constructor.
+     */
     public function __construct() {
-        $this->tiendas = new ArrayCollection();
+        $this->tiendasProductos = new ArrayCollection();
+        $this->lineasPedido = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdproducto(): int
+    {
+        return $this->idproducto;
     }
 
     /**
      * @param int $idproducto
      */
-    public function setIdproducto($idproducto)
+    public function setIdproducto(int $idproducto): void
     {
         $this->idproducto = $idproducto;
     }
@@ -71,7 +82,7 @@ class Producto
     /**
      * @return string
      */
-    public function getNombre()
+    public function getNombre(): string
     {
         return $this->nombre;
     }
@@ -79,7 +90,7 @@ class Producto
     /**
      * @param string $nombre
      */
-    public function setNombre($nombre)
+    public function setNombre(string $nombre): void
     {
         $this->nombre = $nombre;
     }
@@ -87,7 +98,7 @@ class Producto
     /**
      * @return string
      */
-    public function getDescripcion()
+    public function getDescripcion(): string
     {
         return $this->descripcion;
     }
@@ -95,7 +106,7 @@ class Producto
     /**
      * @param string $descripcion
      */
-    public function setDescripcion($descripcion)
+    public function setDescripcion(string $descripcion): void
     {
         $this->descripcion = $descripcion;
     }
@@ -103,7 +114,7 @@ class Producto
     /**
      * @return string
      */
-    public function getPrecio()
+    public function getPrecio(): string
     {
         return $this->precio;
     }
@@ -111,16 +122,40 @@ class Producto
     /**
      * @param string $precio
      */
-    public function setPrecio($precio)
+    public function setPrecio(string $precio): void
     {
         $this->precio = $precio;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getIdproducto()
+    public function getLineasPedido()
     {
-        return $this->idproducto;
+        return $this->lineasPedido;
+    }
+
+    /**
+     * @param mixed $lineasPedido
+     */
+    public function setLineasPedido($lineasPedido): void
+    {
+        $this->lineasPedido = $lineasPedido;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTiendasProductos()
+    {
+        return $this->tiendasProductos;
+    }
+
+    /**
+     * @param mixed $tiendasProductos
+     */
+    public function setTiendasProductos($tiendasProductos): void
+    {
+        $this->tiendasProductos = $tiendasProductos;
     }
 }

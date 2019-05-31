@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,21 +38,29 @@ class Tienda
 
 
     /**
-     * Muchas tiendas tienen muchos productos.
-     * @ORM\ManyToMany(targetEntity="Producto", mappedBy="tiendas")
+     * Una Tienda se asocia con muchos productos.
+     * @ORM\OneToMany(targetEntity="TiendasProductos", mappedBy="productos")
      */
-    private $productos;
+    private $tiendasProductos;
 
+    /**
+     * Una Tienda tiene lineas de pedido.
+     * @ORM\OneToMany(targetEntity="LineasPedido", mappedBy="shopper")
+     */
+    private $lineasPedido;
+
+    /**
+     * Tienda constructor.
+     */
     public function __construct() {
-        $this->productos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tiendasProductos = new ArrayCollection();
+        $this->lineasPedido = new ArrayCollection();
     }
-
-
 
     /**
      * @return int
      */
-    public function getIdtienda()
+    public function getIdtienda(): int
     {
         return $this->idtienda;
     }
@@ -59,14 +68,15 @@ class Tienda
     /**
      * @param int $idtienda
      */
-    public function setIdtienda($idtienda)
+    public function setIdtienda(int $idtienda): void
     {
         $this->idtienda = $idtienda;
     }
+
     /**
      * @return string
      */
-    public function getNombre()
+    public function getNombre(): string
     {
         return $this->nombre;
     }
@@ -74,7 +84,7 @@ class Tienda
     /**
      * @param string $nombre
      */
-    public function setNombre($nombre)
+    public function setNombre(string $nombre): void
     {
         $this->nombre = $nombre;
     }
@@ -82,7 +92,7 @@ class Tienda
     /**
      * @return string
      */
-    public function getDireccion()
+    public function getDireccion(): string
     {
         return $this->direccion;
     }
@@ -90,8 +100,40 @@ class Tienda
     /**
      * @param string $direccion
      */
-    public function setDireccion($direccion)
+    public function setDireccion(string $direccion): void
     {
         $this->direccion = $direccion;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTiendasProductos()
+    {
+        return $this->tiendasProductos;
+    }
+
+    /**
+     * @param mixed $tiendasProductos
+     */
+    public function setTiendasProductos($tiendasProductos): void
+    {
+        $this->tiendasProductos = $tiendasProductos;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLineasPedido()
+    {
+        return $this->lineasPedido;
+    }
+
+    /**
+     * @param mixed $lineasPedido
+     */
+    public function setLineasPedido($lineasPedido): void
+    {
+        $this->lineasPedido = $lineasPedido;
     }
 }

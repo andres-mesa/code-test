@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * Cliente/Usuario de la aplicacion
@@ -60,13 +59,13 @@ class Cliente
 
     /**
      * Un Cliente tiene muchos pedidos.
-     * @OneToMany(targetEntity="Pedido", mappedBy="idCliente")
+     * @ORM\OneToMany(targetEntity="Pedido", mappedBy="cliente")
      */
     private $pedidos;
 
     /**
      * Un Cliente tiene muchas direcciones.
-     * @OneToMany(targetEntity="Direccion", mappedBy="idCliente")
+     * @ORM\OneToMany(targetEntity="Direccion", mappedBy="cliente")
      */
     private $direcciones;
 
@@ -83,23 +82,23 @@ class Cliente
     /**
      * @return int
      */
-    public function getIdCliente()
+    public function getIdCliente(): int
     {
         return $this->idCliente;
     }
 
     /**
-     * @param int $idcliente
+     * @param int $idCliente
      */
-    public function setIdCliente($idcliente)
+    public function setIdCliente(int $idCliente): void
     {
-        $this->idCliente = $idcliente;
+        $this->idCliente = $idCliente;
     }
 
     /**
      * @return string
      */
-    public function getNombre()
+    public function getNombre(): string
     {
         return $this->nombre;
     }
@@ -107,7 +106,7 @@ class Cliente
     /**
      * @param string $nombre
      */
-    public function setNombre($nombre)
+    public function setNombre(string $nombre): void
     {
         $this->nombre = $nombre;
     }
@@ -115,7 +114,7 @@ class Cliente
     /**
      * @return string
      */
-    public function getApellido1()
+    public function getApellido1(): string
     {
         return $this->apellido1;
     }
@@ -123,7 +122,7 @@ class Cliente
     /**
      * @param string $apellido1
      */
-    public function setApellido1($apellido1)
+    public function setApellido1(string $apellido1): void
     {
         $this->apellido1 = $apellido1;
     }
@@ -131,7 +130,7 @@ class Cliente
     /**
      * @return string
      */
-    public function getApellido2()
+    public function getApellido2(): string
     {
         return $this->apellido2;
     }
@@ -139,7 +138,7 @@ class Cliente
     /**
      * @param string $apellido2
      */
-    public function setApellido2($apellido2)
+    public function setApellido2(string $apellido2): void
     {
         $this->apellido2 = $apellido2;
     }
@@ -147,7 +146,7 @@ class Cliente
     /**
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -155,7 +154,7 @@ class Cliente
     /**
      * @param string $email
      */
-    public function setEmail($email)
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
@@ -163,7 +162,7 @@ class Cliente
     /**
      * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -171,7 +170,7 @@ class Cliente
     /**
      * @param string $password
      */
-    public function setPassword($password)
+    public function setPassword(string $password): void
     {
         $this->password = $password;
     }
@@ -179,14 +178,34 @@ class Cliente
     /**
      * @return mixed
      */
-    public function getPedidos() {
+    public function getPedidos()
+    {
         return $this->pedidos;
     }
 
     /**
      * @param mixed $pedidos
      */
-    public function setPedidos($pedidos) {
+    public function setPedidos($pedidos): void
+    {
         $this->pedidos = $pedidos;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDirecciones()
+    {
+        return $this->direcciones;
+    }
+
+    /**
+     * @param mixed $direcciones
+     */
+    public function setDirecciones($direcciones): void
+    {
+        $this->direcciones = $direcciones;
+    }
+
+
 }

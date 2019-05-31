@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,7 +27,7 @@ class Direccion
      * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="direcciones")
      * @ORM\JoinColumn(name="idCliente", referencedColumnName="idCliente")
      */
-    private $idCliente;
+    private $cliente;
 
     /**
      * @var string
@@ -51,95 +52,111 @@ class Direccion
 
     /**
      * Una Direccion tiene muchos pedidos.
-     * @ORM\OneToMany(targetEntity="Pedido", mappedBy="idDireccion")
+     * @ORM\OneToMany(targetEntity="Pedido", mappedBy="direccion")
      */
     private $pedidos;
 
+    private function __construct()
+    {
+       $this->pedidos = new ArrayCollection();
+    }
 
     /**
-     *
      * @return int
      */
-    public function getIdDireccion()
+    public function getIdDireccion(): int
     {
         return $this->idDireccion;
     }
 
     /**
-     * @param string $calle
-     *
-     * @return Direccion
+     * @param int $idDireccion
      */
-    public function setCalle($calle)
+    public function setIdDireccion(int $idDireccion): void
     {
-        $this->calle = $calle;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-
-    public function getCalle()
-    {
-        return $this->calle;
-    }
-
-    /**
-     * @param string $codPostal
-     *
-     * @return Direccion
-     */
-
-    public function setCodPostal($codPostal)
-    {
-        $this->codPostal = $codPostal;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCodPostal()
-    {
-        return $this->codPostal;
-    }
-
-    /**
-     * @param string $localidad
-     *
-     * @return Direccion
-     */
-    public function setLocalidad($localidad)
-    {
-        $this->localidad = $localidad;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLocalidad()
-    {
-        return $this->localidad;
+        $this->idDireccion = $idDireccion;
     }
 
     /**
      * @return Cliente
      */
-    public function getIdCliente()
+    public function getCliente(): Cliente
     {
-        return $this->idCliente;
+        return $this->cliente;
     }
 
     /**
-     * @param Cliente $idcliente
+     * @param Cliente $cliente
      */
-    public function setIdCliente($idcliente)
+    public function setCliente(Cliente $cliente): void
     {
-        $this->idCliente = $idcliente;
+        $this->cliente = $cliente;
     }
+
+    /**
+     * @return string
+     */
+    public function getCalle(): string
+    {
+        return $this->calle;
+    }
+
+    /**
+     * @param string $calle
+     */
+    public function setCalle(string $calle): void
+    {
+        $this->calle = $calle;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCodPostal(): string
+    {
+        return $this->codPostal;
+    }
+
+    /**
+     * @param string $codPostal
+     */
+    public function setCodPostal(string $codPostal): void
+    {
+        $this->codPostal = $codPostal;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocalidad(): string
+    {
+        return $this->localidad;
+    }
+
+    /**
+     * @param string $localidad
+     */
+    public function setLocalidad(string $localidad): void
+    {
+        $this->localidad = $localidad;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPedidos()
+    {
+        return $this->pedidos;
+    }
+
+    /**
+     * @param mixed $pedidos
+     */
+    public function setPedidos($pedidos): void
+    {
+        $this->pedidos = $pedidos;
+    }
+
+
+
 }

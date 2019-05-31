@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,26 +29,38 @@ class Shopper
      */
     private $nombre;
 
+
     /**
-     * @param int $idshopper
+     * Un Shopper tiene asignadas muchas lineas de pedido.
+     * @ORM\OneToMany(targetEntity="LineasPedido", mappedBy="shopper")
      */
-    public function setIdshopper($idshopper)
-    {
-        $this->idshopper = $idshopper;
+    private $lineasPedido;
+
+
+    public function __construct() {
+        $this->lineasPedido = new ArrayCollection();
     }
 
     /**
      * @return int
      */
-    public function getIdshopper()
+    public function getIdshopper(): int
     {
         return $this->idshopper;
     }
 
     /**
+     * @param int $idshopper
+     */
+    public function setIdshopper(int $idshopper): void
+    {
+        $this->idshopper = $idshopper;
+    }
+
+    /**
      * @return string
      */
-    public function getNombre()
+    public function getNombre(): string
     {
         return $this->nombre;
     }
@@ -55,8 +68,24 @@ class Shopper
     /**
      * @param string $nombre
      */
-    public function setNombre($nombre)
+    public function setNombre(string $nombre): void
     {
         $this->nombre = $nombre;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLineasPedido()
+    {
+        return $this->lineasPedido;
+    }
+
+    /**
+     * @param mixed $lineasPedido
+     */
+    public function setLineasPedido($lineasPedido): void
+    {
+        $this->lineasPedido = $lineasPedido;
     }
 }

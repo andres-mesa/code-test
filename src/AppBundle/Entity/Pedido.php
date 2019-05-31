@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Entidad que representa un pedido
  *
- * @ORM\Table(name="pedido", indexes={@ORM\Index(name="idCliente", columns={"idCliente"})})
+ * @ORM\Table(name="pedido")
  * @ORM\Entity
  */
 class Pedido
@@ -23,20 +23,18 @@ class Pedido
     private $idPedido;
 
     /**
-     * @var \AppBundle\Entity\Cliente
-     *
+     * Los pedidos tienen un cliente
      * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="pedidos")
      * @ORM\JoinColumn(name="idCliente", referencedColumnName="idCliente")
      */
-    private $idCliente;
+    private $cliente;
 
     /**
-     * @var \AppBundle\Entity\Direccion
-     *
+     * Los pedidos tienen una dirección
      * @ORM\ManyToOne(targetEntity="Direccion", inversedBy="pedidos")
      * @ORM\JoinColumn(name="idDireccion", referencedColumnName="idDireccion")
      */
-    private $idDireccion;
+    private $direccion;
 
     /**
      * @var string
@@ -102,41 +100,71 @@ class Pedido
     private $origen;
 
     /**
-     * Un Pedido tiene muchas lineas de producto.
-     * @ORM\OneToMany(targetEntity="PedidosProductos", mappedBy="pedido")
+     * Un Pedido tiene muchas lineas de pedido.
+     * @ORM\OneToMany(targetEntity="LineasPedido", mappedBy="pedido")
      */
-    private $pedidosProductos;
-
+    private $lineasPedido;
 
     /**
      * Constructor de clase
      */
     public function __construct()
     {
-        $this->pedidosProductos = new ArrayCollection();
+        $this->lineasPedido = new ArrayCollection();
     }
 
     /**
-     * @return Cliente
+     * @return int
      */
-
-    public function getIdcliente()
+    public function getIdPedido(): int
     {
-        return $this->idCliente;
+        return $this->idPedido;
     }
 
     /**
-     * @param Cliente $idcliente
+     * @param int $idPedido
      */
-    public function setIdcliente($idcliente)
+    public function setIdPedido(int $idPedido): void
     {
-        $this->idCliente = $idcliente;
+        $this->idPedido = $idPedido;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCliente()
+    {
+        return $this->cliente;
+    }
+
+    /**
+     * @param mixed $cliente
+     */
+    public function setCliente($cliente): void
+    {
+        $this->cliente = $cliente;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDireccion()
+    {
+        return $this->direccion;
+    }
+
+    /**
+     * @param mixed $direccion
+     */
+    public function setDireccion($direccion): void
+    {
+        $this->direccion = $direccion;
     }
 
     /**
      * @return string
      */
-    public function getNombrecompleto()
+    public function getNombreCompleto(): string
     {
         return $this->nombreCompleto;
     }
@@ -144,7 +172,7 @@ class Pedido
     /**
      * @param string $nombreCompleto
      */
-    public function setNombreCompleto($nombreCompleto)
+    public function setNombreCompleto(string $nombreCompleto): void
     {
         $this->nombreCompleto = $nombreCompleto;
     }
@@ -152,7 +180,7 @@ class Pedido
     /**
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -160,7 +188,7 @@ class Pedido
     /**
      * @param string $email
      */
-    public function setEmail($email)
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
@@ -168,7 +196,7 @@ class Pedido
     /**
      * @return int
      */
-    public function getTelefono()
+    public function getTelefono(): int
     {
         return $this->telefono;
     }
@@ -176,39 +204,23 @@ class Pedido
     /**
      * @param int $telefono
      */
-    public function setTelefono($telefono)
+    public function setTelefono(int $telefono): void
     {
         $this->telefono = $telefono;
     }
 
     /**
-     * @return Direccion
-     */
-    public function getIdDireccion()
-    {
-        return $this->idDireccion;
-    }
-
-    /**
-     * @param string $direccionEntrega
-     */
-    public function setDireccionentrega($direccionEntrega)
-    {
-        $this->direccionEntrega = $direccionEntrega;
-    }
-
-    /**
      * @return string
      */
-    public function getDireccionEntrega()
+    public function getDireccionEntrega(): string
     {
         return $this->direccionEntrega;
     }
 
     /**
-     * @param integer $direccionEntrega
+     * @param string $direccionEntrega
      */
-    public function setIdDireccion($direccionEntrega)
+    public function setDireccionEntrega(string $direccionEntrega): void
     {
         $this->direccionEntrega = $direccionEntrega;
     }
@@ -216,7 +228,7 @@ class Pedido
     /**
      * @return \DateTime
      */
-    public function getFechacompra()
+    public function getFechaCompra(): \DateTime
     {
         return $this->fechaCompra;
     }
@@ -224,7 +236,7 @@ class Pedido
     /**
      * @param \DateTime $fechaCompra
      */
-    public function setFechaCompra($fechaCompra)
+    public function setFechaCompra(\DateTime $fechaCompra): void
     {
         $this->fechaCompra = $fechaCompra;
     }
@@ -232,7 +244,7 @@ class Pedido
     /**
      * @return \DateTime
      */
-    public function getFechaEntrega()
+    public function getFechaEntrega(): \DateTime
     {
         return $this->fechaEntrega;
     }
@@ -240,7 +252,7 @@ class Pedido
     /**
      * @param \DateTime $fechaEntrega
      */
-    public function setFechaEntrega($fechaEntrega)
+    public function setFechaEntrega(\DateTime $fechaEntrega): void
     {
         $this->fechaEntrega = $fechaEntrega;
     }
@@ -248,15 +260,15 @@ class Pedido
     /**
      * @return int
      */
-    public function getIdfranjaentrega()
+    public function getIdFranjaEntrega(): int
     {
-        return $this->idfranjaEntrega;
+        return $this->idFranjaEntrega;
     }
 
     /**
      * @param int $idFranjaEntrega
      */
-    public function setIdfranjaentrega($idFranjaEntrega)
+    public function setIdFranjaEntrega(int $idFranjaEntrega): void
     {
         $this->idFranjaEntrega = $idFranjaEntrega;
     }
@@ -264,7 +276,7 @@ class Pedido
     /**
      * @return string
      */
-    public function getImportetotal()
+    public function getImporteTotal(): string
     {
         return $this->importeTotal;
     }
@@ -272,31 +284,15 @@ class Pedido
     /**
      * @param string $importeTotal
      */
-    public function setImportetotal($importeTotal)
+    public function setImporteTotal(string $importeTotal): void
     {
         $this->importeTotal = $importeTotal;
     }
 
     /**
-     * @return int
-     */
-    public function getIdpedido()
-    {
-        return $this->idPedido;
-    }
-
-    /**
-     * @param int $idpedido
-     */
-    public function setIdPedido($idPedido)
-    {
-        $this->idPedido = $idPedido;
-    }
-
-    /**
      * @return string
      */
-    public function getOrigen()
+    public function getOrigen(): string
     {
         return $this->origen;
     }
@@ -304,8 +300,24 @@ class Pedido
     /**
      * @param string $origen
      */
-    public function setOrigen($origen)
+    public function setOrigen(string $origen): void
     {
         $this->origen = $origen;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLineasPedido()
+    {
+        return $this->lineasPedido;
+    }
+
+    /**
+     * @param mixed $lineasPedido
+     */
+    public function setLineasPedido($lineasPedido): void
+    {
+        $this->lineasPedido = $lineasPedido;
     }
 }
