@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * PedidosProductos
@@ -12,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PedidosProductos
 {
-
 
     /**
      * @var integer
@@ -27,9 +28,7 @@ class PedidosProductos
      * @var \AppBundle\Entity\Pedido
      *
      * @ORM\ManyToOne(targetEntity="Pedido")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idPedido", referencedColumnName="idPedido")
-     * })
+     * @ORM\JoinColumn(name="idPedido", referencedColumnName="idPedido")
      */
     private $idpedido;
 
@@ -37,9 +36,7 @@ class PedidosProductos
      * @var \AppBundle\Entity\Producto
      *
      * @ORM\ManyToOne(targetEntity="Producto")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idProducto", referencedColumnName="idProducto")
-     * })
+     * @ORM\JoinColumn(name="idProducto", referencedColumnName="idProducto")
      */
     private $idproducto;
 
@@ -47,9 +44,7 @@ class PedidosProductos
      * @var \AppBundle\Entity\Shopper
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Shopper")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idShopper", referencedColumnName="idShopper")
-     * })
+     * @ORM\JoinColumn(name="idShopper", referencedColumnName="idShopper")
      */
     private $idshopper;
 
@@ -57,9 +52,7 @@ class PedidosProductos
      * @var \AppBundle\Entity\Tienda
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Tienda")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idTienda", referencedColumnName="idTienda")
-     * })
+     * @ORM\JoinColumn(name="idTienda", referencedColumnName="idTienda")
      */
     private $idtienda;
 
@@ -70,88 +63,131 @@ class PedidosProductos
      */
     private $unidades = '1';
 
+    /*
+     * Relaciones
+     */
+
+    /**
+     * Muchas lineas de pedido "PedidosProducto" tienen un producto.
+     * @ManyToOne(targetEntity="Producto", inversedBy="pedidosProductos")
+     * @JoinColumn(name="idPedido", referencedColumnName="idProducto")
+     */
+    private $producto;
+
+    /**
+     * Muchas lineas de pedido "PedidosProducto" componen un pedido.
+     * @ManyToOne(targetEntity="Pedido", inversedBy="pedidosProductos")
+     * @JoinColumn(name="idPedido", referencedColumnName="idPedido")
+     */
+    private $pedido;
+
+    /**
+     * Muchas lineas de pedido "PedidosProducto" estan asignadas a un shopper.
+     * @ManyToOne(targetEntity="Shopper", inversedBy="pedidosProductos")
+     * @JoinColumn(name="idShopper", referencedColumnName="idShopper")
+     */
+    private $shopper;
+
+    /**
+     * Muchas lineas de pedido "PedidosProducto" tienen una tienda en la que realizar la compra.
+     * @ManyToOne(targetEntity="Tienda", inversedBy="pedidosProductos")
+     * @JoinColumn(name="idPedido", referencedColumnName="idTienda")
+     */
+    private $tienda;
+
     /**
      * @return int
      */
-    public function getUnidades() {
+    public function getUnidades()
+    {
         return $this->unidades;
     }
 
     /**
      * @param int $unidades
      */
-    public function setUnidades($unidades) {
+    public function setUnidades($unidades)
+    {
         $this->unidades = $unidades;
     }
 
     /**
      * @return int
      */
-    public function getIdpedidoproducto() {
+    public function getIdpedidoproducto()
+    {
         return $this->idpedidoproducto;
     }
 
     /**
      * @param int $idpedidoproducto
      */
-    public function setIdpedidoproducto($idpedidoproducto) {
+    public function setIdpedidoproducto($idpedidoproducto)
+    {
         $this->idpedidoproducto = $idpedidoproducto;
     }
 
     /**
      * @return Pedido
      */
-    public function getIdpedido() {
+    public function getIdpedido()
+    {
         return $this->idpedido;
     }
 
     /**
      * @param Pedido $idpedido
      */
-    public function setIdpedido($idpedido) {
+    public function setIdpedido($idpedido)
+    {
         $this->idpedido = $idpedido;
     }
 
     /**
      * @return Producto
      */
-    public function getIdproducto() {
+    public function getIdproducto()
+    {
         return $this->idproducto;
     }
 
     /**
      * @param Producto $idproducto
      */
-    public function setIdproducto($idproducto) {
+    public function setIdproducto($idproducto)
+    {
         $this->idproducto = $idproducto;
     }
 
     /**
      * @return Shopper
      */
-    public function getIdshopper() {
+    public function getIdshopper()
+    {
         return $this->idshopper;
     }
 
     /**
      * @param Shopper $idshopper
      */
-    public function setIdshopper($idshopper) {
+    public function setIdshopper($idshopper)
+    {
         $this->idshopper = $idshopper;
     }
 
     /**
      * @return Tienda
      */
-    public function getIdtienda() {
+    public function getIdtienda()
+    {
         return $this->idtienda;
     }
 
     /**
      * @param Tienda $idtienda
      */
-    public function setIdtienda($idtienda) {
+    public function setIdtienda($idtienda)
+    {
         $this->idtienda = $idtienda;
     }
 }
-

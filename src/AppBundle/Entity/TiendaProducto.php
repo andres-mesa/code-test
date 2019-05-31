@@ -44,43 +44,48 @@ class TiendaProducto
     /**
      * @return int
      */
-    public function getIdtiendaprodcuto() {
+    public function getIdtiendaprodcuto()
+    {
         return $this->idtiendaprodcuto;
     }
 
     /**
      * @param int $idtiendaprodcuto
      */
-    public function setIdtiendaproducto($idtiendaprodcuto) {
+    public function setIdtiendaproducto($idtiendaprodcuto)
+    {
         $this->idtiendaprodcuto = $idtiendaprodcuto;
     }
 
     /**
      * @return Producto
      */
-    public function getIdproducto() {
+    public function getIdproducto()
+    {
         return $this->idproducto;
     }
 
     /**
      * @param Producto $idproducto
      */
-    public function setIdproducto($idproducto) {
+    public function setIdproducto($idproducto)
+    {
         $this->idproducto = $idproducto;
     }
 
     /**
      * @return Tienda
      */
-    public function getIdtienda() {
+    public function getIdtienda()
+    {
         return $this->idtienda;
     }
 
     /**
      * @param Tienda $idtienda
      */
-    public function setIdtienda($idtienda) {
+    public function setIdtienda($idtienda)
+    {
         $this->idtienda = $idtienda;
     }
 }
-

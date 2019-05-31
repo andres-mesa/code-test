@@ -35,45 +35,63 @@ class Tienda
      */
     private $direccion;
 
+
+    /**
+     * Muchas tiendas tienen muchos productos.
+     * @ORM\ManyToMany(targetEntity="Producto", mappedBy="tiendas")
+     */
+    private $productos;
+
+    public function __construct() {
+        $this->productos = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+
+
     /**
      * @return int
      */
-    public function getIdtienda() {
+    public function getIdtienda()
+    {
         return $this->idtienda;
     }
 
     /**
      * @param int $idtienda
      */
-    public function setIdtienda($idtienda) {
+    public function setIdtienda($idtienda)
+    {
         $this->idtienda = $idtienda;
     }
     /**
      * @return string
      */
-    public function getNombre() {
+    public function getNombre()
+    {
         return $this->nombre;
     }
 
     /**
      * @param string $nombre
      */
-    public function setNombre($nombre) {
+    public function setNombre($nombre)
+    {
         $this->nombre = $nombre;
     }
 
     /**
      * @return string
      */
-    public function getDireccion() {
+    public function getDireccion()
+    {
         return $this->direccion;
     }
 
     /**
      * @param string $direccion
      */
-    public function setDireccion($direccion) {
+    public function setDireccion($direccion)
+    {
         $this->direccion = $direccion;
     }
 }
-

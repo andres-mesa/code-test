@@ -2,10 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
- * Clientes
+ * Cliente/Usuario de la aplicacion
  *
  * @ORM\Table(name="cliente")
  * @ORM\Entity
@@ -19,7 +21,7 @@ class Cliente
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $idcliente;
+    private $idCliente;
 
     /**
      * @var string
@@ -56,89 +58,135 @@ class Cliente
      */
     private $password;
 
+    /**
+     * Un Cliente tiene muchos pedidos.
+     * @OneToMany(targetEntity="Pedido", mappedBy="idCliente")
+     */
+    private $pedidos;
+
+    /**
+     * Un Cliente tiene muchas direcciones.
+     * @OneToMany(targetEntity="Direccion", mappedBy="idCliente")
+     */
+    private $direcciones;
+
+
+    /**
+     * Constructor de clase
+     */
+    public function __construct()
+    {
+        $this->pedidos = new ArrayCollection();
+        $this->direcciones = new ArrayCollection();
+    }
 
     /**
      * @return int
      */
-    public function getIdcliente() {
-        return $this->idcliente;
+    public function getIdCliente()
+    {
+        return $this->idCliente;
     }
 
     /**
      * @param int $idcliente
      */
-    public function setIdcliente($idcliente) {
-        $this->idcliente = $idcliente;
+    public function setIdCliente($idcliente)
+    {
+        $this->idCliente = $idcliente;
     }
 
     /**
      * @return string
      */
-    public function getNombre() {
+    public function getNombre()
+    {
         return $this->nombre;
     }
 
     /**
      * @param string $nombre
      */
-    public function setNombre($nombre) {
+    public function setNombre($nombre)
+    {
         $this->nombre = $nombre;
     }
 
     /**
      * @return string
      */
-    public function getApellido1() {
+    public function getApellido1()
+    {
         return $this->apellido1;
     }
 
     /**
      * @param string $apellido1
      */
-    public function setApellido1($apellido1) {
+    public function setApellido1($apellido1)
+    {
         $this->apellido1 = $apellido1;
     }
 
     /**
      * @return string
      */
-    public function getApellido2() {
+    public function getApellido2()
+    {
         return $this->apellido2;
     }
 
     /**
      * @param string $apellido2
      */
-    public function setApellido2($apellido2) {
+    public function setApellido2($apellido2)
+    {
         $this->apellido2 = $apellido2;
     }
 
     /**
      * @return string
      */
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
     /**
      * @param string $email
      */
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
     }
 
     /**
      * @return string
      */
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
 
     /**
      * @param string $password
      */
-    public function setPassword($password) {
+    public function setPassword($password)
+    {
         $this->password = $password;
     }
-}
 
+    /**
+     * @return mixed
+     */
+    public function getPedidos() {
+        return $this->pedidos;
+    }
+
+    /**
+     * @param mixed $pedidos
+     */
+    public function setPedidos($pedidos) {
+        $this->pedidos = $pedidos;
+    }
+}

@@ -31,31 +31,32 @@ class Shopper
     /**
      * @param int $idshopper
      */
-    public function setIdshopper($idshopper) {
+    public function setIdshopper($idshopper)
+    {
         $this->idshopper = $idshopper;
     }
 
     /**
      * @return int
      */
-    public function getIdshopper() {
+    public function getIdshopper()
+    {
         return $this->idshopper;
     }
 
     /**
      * @return string
      */
-    public function getNombre() {
+    public function getNombre()
+    {
         return $this->nombre;
     }
 
     /**
      * @param string $nombre
      */
-    public function setNombre($nombre) {
+    public function setNombre($nombre)
+    {
         $this->nombre = $nombre;
     }
-
-
 }
-
