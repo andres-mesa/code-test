@@ -11,9 +11,17 @@ use AppBundle\Entity\Tienda;
 use AppBundle\Entity\TiendasProductos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    private $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
     public function load(ObjectManager $manager)
     {
 
@@ -23,8 +31,9 @@ class AppFixtures extends Fixture
             $cliente->setNombre("Nombre ".$i);
             $cliente->setApellido1("Apellido ".$i);
             $cliente->setApellido2("Apellido ".$i);
-            $cliente->setEmail("email".$i."@lolamarket.com");
-            $password = self::generateRandomString(50);
+            $cliente->setEmail("cliente".$i."@lolamarket.com");
+            $cliente->setRoles(array('ROLE_USER'));
+            $password = $this->encoder->encodePassword($cliente, 'lolamarket'); //para facilitar el testing, asignamos el mismo pass a todos los usuarios
             $cliente->setPassword($password);
 
 
@@ -43,6 +52,10 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 20; $i++) {
             $shopper = new Shopper();
             $shopper->setNombre("Nombre ".$i);
+            $shopper->setEmail("shopper".$i."@lolamarket.com");
+            $shopper->setRoles(array('ROLE_USER'));
+            $password = $this->encoder->encodePassword($shopper, 'lolamarket');
+            $shopper->setPassword($password);
             $manager->persist($shopper);
         }
 
@@ -159,16 +172,5 @@ class AppFixtures extends Fixture
             }
             $manager->flush();
         }
-    }
-
-    public function generateRandomString($length = 10)
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
     }
 }

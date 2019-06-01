@@ -2,23 +2,73 @@
 # https://symfony.com/doc/current/security.html
 security:
 
-    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    encoders:
+        AppBundle\Entity\Cliente:
+            algorithm: bcrypt
+            cost: 12
+
+        AppBundle\Entity\Shopper:
+            algorithm: bcrypt
+            cost: 12
+
     providers:
-        in_memory:
-            memory: ~
+        app_clientes:
+            entity:
+                class: AppBundle\Entity\Cliente
+                property: email
+
+        app_shoppers:
+            entity:
+                class: AppBundle\Entity\Shopper
+                property: email
+
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        loginclientes:
+            pattern:  ^/apiclientes/login
+            provider: app_clientes
+            stateless: true
+            anonymous: true
+            json_login:
+                check_path:               /apiclientes/login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+
+        apiclientes:
+            pattern:   ^/apiclientes
+            provider: app_clientes
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+        loginshoppers:
+            pattern:  ^/apishoppers/login
+            provider: app_shoppers
+            stateless: true
+            anonymous: true
+            json_login:
+                check_path:               /apishoppers/login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+
+        apishoppers:
+            pattern:   ^/apishoppers
+            provider: app_shoppers
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
         main:
             anonymous: ~
-            # activate different ways to authenticate
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+    access_control:
+        - { path: ^/apiclientes/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/apiclientes,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/apishoppers/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/apishoppers,       roles: IS_AUTHENTICATED_FULLY }
