@@ -56,7 +56,7 @@ class Direccion
      */
     private $pedidos;
 
-    private function __construct()
+    public function __construct()
     {
        $this->pedidos = new ArrayCollection();
     }

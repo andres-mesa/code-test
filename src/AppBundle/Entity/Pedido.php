@@ -95,7 +95,7 @@ class Pedido
     /**
      * @var string
      *
-     * @ORM\Column(name="origenPedido", type="integer", length=1, nullable=true)
+     * @ORM\Column(name="origenPedido", type="string", length=255, nullable=true)
      */
     private $origen;
 

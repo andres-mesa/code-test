@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
  *
  * @ORM\Table(name="lineas_pedido")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class LineasPedido
 {
@@ -153,5 +154,10 @@ class LineasPedido
     public function setTienda($tienda): void
     {
         $this->tienda = $tienda;
+    }
+
+
+    private function actualizarValorCarro(){
+
     }
 }
