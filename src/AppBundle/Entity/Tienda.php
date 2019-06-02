@@ -39,7 +39,7 @@ class Tienda
 
     /**
      * Una Tienda se asocia con muchos productos.
-     * @ORM\OneToMany(targetEntity="TiendasProductos", mappedBy="productos")
+     * @ORM\OneToMany(targetEntity="TiendasProductos", mappedBy="tienda")
      */
     private $tiendasProductos;
 

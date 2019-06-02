@@ -51,7 +51,7 @@ class Producto
 
     /**
      * Un Producto se encuentra en muchas Tiendas.
-     * @ORM\OneToMany(targetEntity="TiendasProductos", mappedBy="tienda")
+     * @ORM\OneToMany(targetEntity="TiendasProductos", mappedBy="producto")
      */
     private $tiendasProductos;
 
