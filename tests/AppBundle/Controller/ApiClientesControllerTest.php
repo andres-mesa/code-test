@@ -62,7 +62,7 @@ class ApiClientesControllerTest extends WebTestCase
         $client->request('GET', '/apiclientes/v1/tiendas');
         $tiendas = json_decode($client->getResponse()->getContent());
 
-        //De las tiendas disponibles, seleccionamos una y vemos que productos tiene disponibles
+        //De las tiendas disponibles, seleccionamos una
         $tiendaAleatoria = array_rand($tiendas, 1);
         $idTienda = $tiendas[$tiendaAleatoria]->idTienda;
 
@@ -91,9 +91,9 @@ class ApiClientesControllerTest extends WebTestCase
 
         foreach ($algunosProductos as $productoDisponible){
             $temp = array();
-            $temp["producto"] = $productosDisponibles[$productoDisponible]["idProducto"];
-            $temp["cantidad"]   = rand(1,5);
-            $temp["tienda"]     = $idTienda;
+            $temp["producto"]      = $productosDisponibles[$productoDisponible]["idProducto"];
+            $temp["cantidad"]      = rand(1,5);
+            $temp["tienda"]        = $idTienda;
             $pedido["productos"][] = $temp;
         }
 
@@ -108,9 +108,14 @@ class ApiClientesControllerTest extends WebTestCase
             $jsonPedido
         );
 
+
+
         $response = $client->getResponse();
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
         $this->assertJson($response->getContent());
+
+        //Para facilitar verificacion
+        var_dump($response->getContent());
     }
 
 

@@ -166,11 +166,23 @@ class AppFixtures extends Fixture
         foreach ($shoppers as $shopper){
             $tiendaAleatoria = array_rand($tiendas, 1);
             $lineasPedidoSinShopper = $manager->getRepository(LineasPedido::class)->findBy(array("tienda"=>$tiendas[$tiendaAleatoria], "shopper"=> null));
+
             foreach ($lineasPedidoSinShopper as $lineaPedido){
                 $lineaPedido->setShopper($shopper);
                 $manager->persist($lineaPedido);
             }
             $manager->flush();
+        }
+
+        //De cada tienda dejamos una linea de pedido sin shopper para poder probar el endpoint de dispatch
+        foreach ($tiendas as $tienda){
+            $lineasPedido = $manager->getRepository(LineasPedido::class)->findBy(array("tienda"=>$tienda));
+            foreach ($lineasPedido as $linea){
+                $linea->setShopper(null);
+                $manager->persist($linea);
+                $manager->flush();
+                break;
+            }
         }
     }
 }

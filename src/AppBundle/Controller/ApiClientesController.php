@@ -46,6 +46,7 @@ class ApiClientesController extends Controller
         $pedido = new Pedido();
         $manager = $this->getDoctrine()->getManager();
 
+
         try {
             $pedido->setTelefono($datosPedido["telefono"]);
             $pedido->setOrigen($datosPedido["origenPedido"]);
@@ -103,10 +104,9 @@ class ApiClientesController extends Controller
     /**
      * @Get("/apiclientes/v1/tiendas")
      * Tiendas disponibles
-     * @param Request $request
      * @return Response
      */
-    public function getTiendasDisponibles(Request $request)
+    public function getTiendasDisponibles()
     {
         $manager = $this->getDoctrine()->getManager();
         $tiendas =  $manager->getRepository(Tienda::class)->findAll();
@@ -129,10 +129,10 @@ class ApiClientesController extends Controller
     /**
      * @Get("/apiclientes/v1/tiendas/{tienda}/productos")
      * Productos disponibles en una tienda
-     * @param Request $request
+     * @param $tienda integer identificador de la tienda
      * @return Response
      */
-    public function getProductosDisponibles(Request $request, $tienda)
+    public function getProductosDisponibles($tienda)
     {
         $manager = $this->getDoctrine()->getManager();
         $productosDisponibles =  $manager->getRepository(TiendasProductos::class)->findBy(array("tienda"=>$tienda));
@@ -156,10 +156,9 @@ class ApiClientesController extends Controller
     /**
      * @Get("/apiclientes/v1/cliente/direcciones")
      * Productos disponibles en una tienda
-     * @param Request $request
      * @return Response
      */
-    public function getDireccionesDisponibles(Request $request)
+    public function getDireccionesDisponibles()
     {
         //Obtenemos el token y verificamos que corresponde a un usuario
         $token = $this->container->get('security.token_storage')->getToken();

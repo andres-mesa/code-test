@@ -45,7 +45,7 @@ class Tienda
 
     /**
      * Una Tienda tiene lineas de pedido.
-     * @ORM\OneToMany(targetEntity="LineasPedido", mappedBy="shopper")
+     * @ORM\OneToMany(targetEntity="LineasPedido", mappedBy="tienda")
      */
     private $lineasPedido;
 

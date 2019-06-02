@@ -58,13 +58,31 @@ class ApiShoppersControllerTest extends WebTestCase
     public function testDispatchpedido()
     {
         $client = $this->autenticarShopper();
-        $client->request('GET', '/apishoppers/v1/dispatchPedidos');
+
+        //Obtenemos los datos del shopper
+        $client->request('GET', '/apishoppers/v1/shopper');
+        $shopper = json_decode($client->getResponse()->getContent());
+        $idShopper = $shopper->idShopper;
+
+        //Obtenemos las tiendas disponibles
+        $client->request('GET', '/apishoppers/v1/tiendas');
+        $tiendas = json_decode($client->getResponse()->getContent());
+
+        //De las tiendas disponibles, seleccionamos una
+        $tiendaAleatoria = array_rand($tiendas, 1);
+        $idTienda = $tiendas[$tiendaAleatoria]->idTienda;
+
+        //Obtenemos los productos que debemos adquirir en la tienda
+        $client->request('GET', '/apishoppers/v1/dispatchPedidos/'.$idShopper."/tiendas/".$idTienda);
+        $response = $client->getResponse();
+        $productosDisponibles = json_decode($response->getContent(), true);
 
         $response = $client->getResponse();
-
         $data = json_decode($response->getContent(), true);
 
-        $this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
+        //Para facilitar verificacion
+        var_dump($response->getContent());
+
         $this->assertJson($response->getContent());
     }
 
