@@ -3,11 +3,13 @@ code-test
 
 **Pasos para instalar y ejecutar esta prueba** 
 
+    git clone https://github.com/andres-mesa/code-test.git
+    
+    cd code-test
+    
     composer install
 
-Cambiar parametros de la BBDD en app/parameters.yml si es necesario
-
-En el directorio raiz del proyecto:
+En el directorio raiz del proyecto, crear BBDD y actualizar el esquema:
 
     php bin/console doctrine:database:create
 
@@ -24,5 +26,5 @@ Test unitarios
     
 **Notas**
 
-Requiere PHP >=5.5.9 aunque se ha desarrollado con la versión 7.1
+Requiere PHP 7.1
 
