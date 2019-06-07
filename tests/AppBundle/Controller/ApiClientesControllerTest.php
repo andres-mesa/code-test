@@ -6,9 +6,16 @@ use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use JMS\Serializer\Builder;
 
+/**
+ * Class ApiClientesControllerTest
+ * @package AppBundle\Tests\Controller
+ */
 class ApiClientesControllerTest extends WebTestCase
 {
 
+    /**
+     * Test para comprobar que un cliente puede autenticar en el API
+     */
     public function testClientePuedeAutenticar()
     {
         $client = static::createClient();
@@ -31,6 +38,9 @@ class ApiClientesControllerTest extends WebTestCase
         $this->assertArrayHasKey("token",$data);
     }
 
+    /**
+     * Test para comprobar que un cliente no puede autenticar con datos erroneos
+     */
     public function testClienteNoPuedeAutenticar()
     {
         $client = static::createClient();
@@ -54,6 +64,9 @@ class ApiClientesControllerTest extends WebTestCase
         $this->assertEquals("401",$data["code"]);
     }
 
+    /**
+     * Test para comprobar la recepción de pedidos
+     */
     public function testPostpedido()
     {
         $client = $this->autenticarCliente();
@@ -119,7 +132,12 @@ class ApiClientesControllerTest extends WebTestCase
     }
 
 
-
+    /**
+     * Fución auxiliar que realiza la autenticación en el API
+     * @param string $username
+     * @param string $password
+     * @return \Symfony\Bundle\FrameworkBundle\Client
+     */
     protected function autenticarCliente($username = 'cliente0@lolamarket.com', $password = 'lolamarket')
     {
         $client = static::createClient();

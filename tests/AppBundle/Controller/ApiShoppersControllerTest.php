@@ -4,8 +4,15 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * Class ApiShoppersControllerTest
+ * @package AppBundle\Tests\Controller
+ */
 class ApiShoppersControllerTest extends WebTestCase
 {
+    /**
+     * Test para comprobar que un shopper puede autenticar en la aplicación
+     */
     public function testShopperPuedeAutenticar()
     {
         $client = static::createClient();
@@ -30,6 +37,9 @@ class ApiShoppersControllerTest extends WebTestCase
         $this->assertArrayHasKey("token",$data);
     }
 
+    /**
+     * Test para comprobar que un shopper no puede autenticar con datos incorrectos
+     */
     public function testShopperNoPuedeAutenticar()
     {
         $client = static::createClient();
@@ -55,6 +65,9 @@ class ApiShoppersControllerTest extends WebTestCase
         $this->assertEquals("401",$data["code"]);
     }
 
+    /**
+     * Test para comprobar que un shopper puede consultar que productos tiene que adquirir en una tienda
+     */
     public function testDispatchpedido()
     {
         $client = $this->autenticarShopper();
@@ -86,6 +99,12 @@ class ApiShoppersControllerTest extends WebTestCase
         $this->assertJson($response->getContent());
     }
 
+    /**
+     * Función auxiliar para realizar un login en el API de shoppers y obtener el Token de acceso
+     * @param string $username
+     * @param string $password
+     * @return \Symfony\Bundle\FrameworkBundle\Client
+     */
     protected function autenticarShopper($username = 'shopper0@lolamarket.com', $password = 'lolamarket')
     {
         $client = static::createClient();

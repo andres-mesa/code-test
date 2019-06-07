@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ApiShoppersController extends Controller
 {
     /**
+     * Recibe un identificador de shopper y una tienda y retorna respuesta JSON con los productos que debe adquirir
      * @Get("/apishoppers/v1/dispatchPedidos/{shopper}/tiendas/{tienda}")
      * @param $shopper integer el shopper que debe adquirir los productos
      * @param $tienda integer identificador de la tienda
@@ -57,8 +58,8 @@ class ApiShoppersController extends Controller
     }
 
     /**
+     * Tiendas disponibles para comprar
      * @Get("/apishoppers/v1/tiendas")
-     * Tiendas disponibles
      * @return Response
      */
     public function getTiendasDisponibles()
@@ -82,8 +83,8 @@ class ApiShoppersController extends Controller
     }
 
     /**
+     * Datos de un shopper
      * @Get("/apishoppers/v1/shopper")
-     * Tiendas disponibles
      * @return Response
      */
     public function getDatosShopper()

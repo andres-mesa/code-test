@@ -22,8 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiClientesController extends Controller
 {
     /**
+     * Crear pedido para un cliente
      * @Post("/apiclientes/v1/pedido")
-     * Crear pedido
      * @param Request $request
      * @return JsonResponse
      * @throws \Exception
@@ -102,8 +102,8 @@ class ApiClientesController extends Controller
 
 
     /**
+     * Tiendas disponibles de un cliente
      * @Get("/apiclientes/v1/tiendas")
-     * Tiendas disponibles
      * @return Response
      */
     public function getTiendasDisponibles()
@@ -127,8 +127,8 @@ class ApiClientesController extends Controller
     }
 
     /**
-     * @Get("/apiclientes/v1/tiendas/{tienda}/productos")
      * Productos disponibles en una tienda
+     * @Get("/apiclientes/v1/tiendas/{tienda}/productos")
      * @param $tienda integer identificador de la tienda
      * @return Response
      */
@@ -154,8 +154,8 @@ class ApiClientesController extends Controller
     }
 
     /**
+     * Direcciones disponibles de un cliente
      * @Get("/apiclientes/v1/cliente/direcciones")
-     * Productos disponibles en una tienda
      * @return Response
      */
     public function getDireccionesDisponibles()
