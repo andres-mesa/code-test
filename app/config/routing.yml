@@ -3,8 +3,8 @@ app:
     type: annotation
 
 api_clientes_login_check:
-    path: /apiclientes/login_check
+    path: /customersapi/login_check
 
 api_shoppers_login_check:
-    path: /apishoppers/login_check
+    path: /shoppersapi/login_check
 

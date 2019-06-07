@@ -1,10 +1,7 @@
 <?php
-
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * Represents an Order order line
@@ -34,29 +31,29 @@ class OrderLines
 
     /**
      * Many order lines compose an order
-     * @ManyToOne(targetEntity="Order", inversedBy="orderLines")
-     * @JoinColumn(name="orderId", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderLines")
+     * @ORM\JoinColumn(name="orderId", referencedColumnName="id")
      */
     private $order;
 
     /**
      * Many order lines has a product
-     * @ManyToOne(targetEntity="Product", inversedBy="orderLines")
-     * @JoinColumn(name="productId", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="orderLines")
+     * @ORM\JoinColumn(name="productId", referencedColumnName="id")
      */
     private $product;
 
     /**
      * Many order lines belongs to a shopper
-     * @ManyToOne(targetEntity="Shopper", inversedBy="orderLines")
-     * @JoinColumn(name="shopperId", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Shopper", inversedBy="orderLines")
+     * @ORM\JoinColumn(name="shopperId", referencedColumnName="id")
      */
     private $shopper;
 
     /**
      * Many order lines belongs to a shop
-     * @ManyToOne(targetEntity="Shop", inversedBy="orderLines")
-     * @JoinColumn(name="shopId", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Shop", inversedBy="orderLines")
+     * @ORM\JoinColumn(name="shopId", referencedColumnName="id")
      */
     private $shop;
 

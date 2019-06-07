@@ -1,5 +1,4 @@
 <?php
-
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class that represents a customer order
  *
- * @ORM\Table(name="order")
+ * @ORM\Table(name="`order`")
  * @ORM\Entity
  */
 class Order
@@ -81,9 +80,9 @@ class Order
     /**
      * @var integer
      *
-     * @ORM\Column(name="deliverySlotID", type="integer", nullable=true)
+     * @ORM\Column(name="deliverySlotId", type="integer", nullable=true)
      */
-    private $deliverySlotID;
+    private $deliverySlotId;
 
     /**
      * @var string
@@ -260,17 +259,17 @@ class Order
     /**
      * @return int
      */
-    public function getDeliverySlotID(): int
+    public function getDeliverySlotId(): int
     {
-        return $this->deliverySlotID;
+        return $this->deliverySlotId;
     }
 
     /**
-     * @param int $deliverySlotID
+     * @param int $deliverySlotId
      */
-    public function setDeliverySlotID(int $deliverySlotID): void
+    public function setDeliverySlotId(int $deliverySlotId): void
     {
-        $this->deliverySlotID = $deliverySlotID;
+        $this->deliverySlotId = $deliverySlotId;
     }
 
     /**

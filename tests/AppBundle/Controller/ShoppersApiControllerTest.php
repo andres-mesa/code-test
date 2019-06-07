@@ -5,20 +5,21 @@ namespace AppBundle\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Class ApiShoppersControllerTest
+ * Class ShoppersApiControllerTest
+ * Tests that control basic Shoppers API behaviour
  * @package AppBundle\Tests\Controller
  */
-class ApiShoppersControllerTest extends WebTestCase
+class ShoppersApiControllerTest extends WebTestCase
 {
     /**
-     * Test para comprobar que un shopper puede autenticar en la aplicación
+     * This test check that one shopper with good credentials can loggin into Customers API
      */
-    public function testShopperPuedeAutenticar()
+    public function testShopperCanLoggin()
     {
         $client = static::createClient();
         $client->request(
             'POST',
-            '/apishoppers/login_check',
+            '/shoppersapi/login_check',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
@@ -38,14 +39,14 @@ class ApiShoppersControllerTest extends WebTestCase
     }
 
     /**
-     * Test para comprobar que un shopper no puede autenticar con datos incorrectos
+     * This test check that one customer with bad credentials cannot loggin into Customers API
      */
-    public function testShopperNoPuedeAutenticar()
+    public function testShopperCannotLoggin()
     {
         $client = static::createClient();
         $client->request(
             'POST',
-            '/apishoppers/login_check',
+            '/shoppersapi/login_check',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
@@ -66,51 +67,47 @@ class ApiShoppersControllerTest extends WebTestCase
     }
 
     /**
-     * Test para comprobar que un shopper puede consultar que productos tiene que adquirir en una tienda
+     * This test checks that a Shopper can access his/hers dispatchOrders
      */
-    public function testDispatchpedido()
+    public function testDispatchOrder()
     {
-        $client = $this->autenticarShopper();
+        $client = $this->shoppersLoggin();
 
-        //Obtenemos los datos del shopper
-        $client->request('GET', '/apishoppers/v1/shopper');
+        //Get shopper data
+        $client->request('GET', '/shoppersapi/v1/shopper');
         $shopper = json_decode($client->getResponse()->getContent());
-        $idShopper = $shopper->idShopper;
+        $shopperId = $shopper->shopperId;
 
-        //Obtenemos las tiendas disponibles
-        $client->request('GET', '/apishoppers/v1/tiendas');
-        $tiendas = json_decode($client->getResponse()->getContent());
+        //Get avariable shops
+        $client->request('GET', '/shoppersapi/v1/shops');
+        $shops = json_decode($client->getResponse()->getContent());
 
-        //De las tiendas disponibles, seleccionamos una
-        $tiendaAleatoria = array_rand($tiendas, 1);
-        $idTienda = $tiendas[$tiendaAleatoria]->idTienda;
+        //Get a random Shop
+        $randomShop = array_rand($shops, 1);
+        $shopId = $shops[$randomShop]->shopId;
 
-        //Obtenemos los productos que debemos adquirir en la tienda
-        $client->request('GET', '/apishoppers/v1/dispatchPedidos/'.$idShopper."/tiendas/".$idTienda);
+        //Get the Dispatch Order
+        $client->request('GET', '/shoppersapi/v1/dispatchorders/'.$shopperId."/shops/".$shopId);
         $response = $client->getResponse();
-        $productosDisponibles = json_decode($response->getContent(), true);
 
-        $response = $client->getResponse();
-        $data = json_decode($response->getContent(), true);
-
-        //Para facilitar verificacion
+        //For verification purpose only
         var_dump($response->getContent());
 
         $this->assertJson($response->getContent());
     }
 
     /**
-     * Función auxiliar para realizar un login en el API de shoppers y obtener el Token de acceso
+     * Auxiliary function that for Shoppers loggin
      * @param string $username
      * @param string $password
      * @return \Symfony\Bundle\FrameworkBundle\Client
      */
-    protected function autenticarShopper($username = 'shopper0@lolamarket.com', $password = 'lolamarket')
+    protected function shoppersLoggin($username = 'shopper0@lolamarket.com', $password = 'lolamarket')
     {
         $client = static::createClient();
         $client->request(
             'POST',
-            '/apishoppers/login_check',
+            '/shoppersapi/login_check',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),

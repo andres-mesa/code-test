@@ -3,7 +3,7 @@
 security:
 
     encoders:
-        AppBundle\Entity\Cliente:
+        AppBundle\Entity\Customer:
             algorithm: bcrypt
             cost: 12
 
@@ -12,12 +12,12 @@ security:
             cost: 12
 
     providers:
-        app_clientes:
+        customers_app:
             entity:
-                class: AppBundle\Entity\Cliente
+                class: AppBundle\Entity\Customer
                 property: email
 
-        app_shoppers:
+        shoppers_app:
             entity:
                 class: AppBundle\Entity\Shopper
                 property: email
@@ -28,37 +28,37 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        loginclientes:
-            pattern:  ^/apiclientes/login
-            provider: app_clientes
+        customerslogin:
+            pattern:  ^/customersapi/login
+            provider: customers_app
             stateless: true
             anonymous: true
             json_login:
-                check_path:               /apiclientes/login_check
+                check_path:               /customersapi/login_check
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
 
-        apiclientes:
-            pattern:   ^/apiclientes
-            provider: app_clientes
+        customerssapi:
+            pattern:   ^/customersapi
+            provider: customers_app
             stateless: true
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
 
-        loginshoppers:
-            pattern:  ^/apishoppers/login
-            provider: app_shoppers
+        shopperslogin:
+            pattern:  ^/shoppersapi/login
+            provider: shoppers_app
             stateless: true
             anonymous: true
             json_login:
-                check_path:               /apishoppers/login_check
+                check_path:               /shoppersapi/login_check
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
 
-        apishoppers:
-            pattern:   ^/apishoppers
-            provider: app_shoppers
+        shoppersapi:
+            pattern:   ^/shoppersapi
+            provider: shoppers_app
             stateless: true
             guard:
                 authenticators:
@@ -68,7 +68,7 @@ security:
             anonymous: ~
 
     access_control:
-        - { path: ^/apiclientes/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/apiclientes,       roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/apishoppers/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/apishoppers,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/customersapi/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/customersapi,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/shoppersapi/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/shoppersapi,       roles: IS_AUTHENTICATED_FULLY }

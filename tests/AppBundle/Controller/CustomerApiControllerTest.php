@@ -5,26 +5,27 @@ namespace AppBundle\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Class ApiClientesControllerTest
+ * Class CustomerApiControllerTest
+ * Tests that control Customer API basic behaviour
  * @package AppBundle\Tests\Controller
  */
-class ApiClientesControllerTest extends WebTestCase
+class CustomerApiControllerTest extends WebTestCase
 {
 
     /**
-     * Test para comprobar que un cliente puede autenticar en el API
+     * This test check that one customer with good credentials can loggin into Customers API
      */
-    public function testClientePuedeAutenticar()
+    public function testCustomerCanLoggin()
     {
         $client = static::createClient();
         $client->request(
             'POST',
-            '/apiclientes/login_check',
+            '/customersapi/login_check',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
             json_encode(array(
-                'username' => 'cliente0@lolamarket.com',
+                'username' => 'customer0@lolamarket.com',
                 'password' => 'lolamarket',
             ))
         );
@@ -37,14 +38,14 @@ class ApiClientesControllerTest extends WebTestCase
     }
 
     /**
-     * Test para comprobar que un cliente no puede autenticar con datos erroneos
+     * This test check that one customer with bad credentials cannot loggin into Customers API
      */
-    public function testClienteNoPuedeAutenticar()
+    public function testCustomerCannotLoggin()
     {
         $client = static::createClient();
         $client->request(
             'POST',
-            '/apiclientes/login_check',
+            '/customersapi/login_check',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
@@ -63,56 +64,56 @@ class ApiClientesControllerTest extends WebTestCase
     }
 
     /**
-     * Test para comprobar la recepción de pedidos
+     * This test verifies that the new order process is completed and ok
      */
-    public function testPostpedido()
+    public function testPostOrder()
     {
-        $client = $this->autenticarCliente();
+        $client = $this->customerLoggin();
 
-        //Obtenemos las tiendas disponibles
-        $client->request('GET', '/apiclientes/v1/tiendas');
-        $tiendas = json_decode($client->getResponse()->getContent());
+        //Get avariable shops
+        $client->request('GET', '/customersapi/v1/shops');
+        $shops = json_decode($client->getResponse()->getContent());
 
-        //De las tiendas disponibles, seleccionamos una
-        $tiendaAleatoria = array_rand($tiendas, 1);
-        $idTienda = $tiendas[$tiendaAleatoria]->idTienda;
+        //Get a random Shop
+        $randomShop = array_rand($shops, 1);
+        $shopId = $shops[$randomShop]->id;
 
-        //Obtenemos los productos disponibles en las tiendas
-        $client->request('GET', '/apiclientes/v1/tiendas/'.$idTienda."/productos");
+        //Get products avariable in the random shop
+        $client->request('GET', '/customersapi/v1/shops/'.$shopId."/products");
         $response = $client->getResponse();
-        $productosDisponibles = json_decode($response->getContent(), true);
+        $avariableProducts = json_decode($response->getContent(), true);
 
-        //Obtenemos direcciones disponibles del cliente
-        $client->request('GET', '/apiclientes/v1/cliente/direcciones');
+        //Get a valid customer address
+        $client->request('GET', '/customersapi/v1/customer/addresses');
         $response = $client->getResponse();
-        $direcciones = json_decode($response->getContent(), true);
+        $addresses = json_decode($response->getContent(), true);
 
-        $algunosProductos = array_rand($productosDisponibles, rand(2,count($productosDisponibles)));
-        $unaDireccion = array_rand($direcciones, 1);
+        $someProducts = array_rand($avariableProducts, rand(2,count($avariableProducts)));
+        $oneAddress = array_rand($addresses, 1);
 
-        //Componemos la peticion de pedido
-        $pedido = array();
-        $pedido["direccion"] = $direcciones[$unaDireccion]["idDireccion"];
-        $pedido["telefono"] = "918493122";
-        $pedido["fechaEntrega"] = "2019-07-18";
-        $pedido["idFranjaEntrega"] = 10;
-        $pedido["origenPedido"] = "iOS";
-        $pedido["productos"] = array();
+        //New order array
+        $order = array();
+        $order["addressId"] = $addresses[$oneAddress]["addressId"];
+        $order["phone"] = "918493122";
+        $order["deliveryDate"] = "2019-07-18";
+        $order["deliverySlotId"] = 10;
+        $order["origin"] = "iOS";
+        $order["products"] = array();
 
 
-        foreach ($algunosProductos as $productoDisponible){
+        foreach ($someProducts as $avariableProduct){
             $temp = array();
-            $temp["producto"]      = $productosDisponibles[$productoDisponible]["idProducto"];
-            $temp["cantidad"]      = rand(1,5);
-            $temp["tienda"]        = $idTienda;
-            $pedido["productos"][] = $temp;
+            $temp["productId"]     = $avariableProducts[$avariableProduct]["productId"];
+            $temp["units"]         = rand(1,5);
+            $temp["shopId"]        = $shopId;
+            $order["products"][]   = $temp;
         }
 
-        $jsonPedido = json_encode($pedido);
+        $jsonPedido = json_encode($order);
 
         $client->request(
             'POST',
-            '/apiclientes/v1/pedido',
+            '/customersapi/v1/order',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
@@ -125,7 +126,7 @@ class ApiClientesControllerTest extends WebTestCase
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
         $this->assertJson($response->getContent());
 
-        //Para facilitar verificacion
+        //For verification purpose only
         var_dump($response->getContent());
     }
 
@@ -136,12 +137,12 @@ class ApiClientesControllerTest extends WebTestCase
      * @param string $password
      * @return \Symfony\Bundle\FrameworkBundle\Client
      */
-    protected function autenticarCliente($username = 'cliente0@lolamarket.com', $password = 'lolamarket')
+    protected function customerLoggin($username = 'customer0@lolamarket.com', $password = 'lolamarket')
     {
         $client = static::createClient();
         $client->request(
             'POST',
-            '/apiclientes/login_check',
+            '/customersapi/login_check',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),

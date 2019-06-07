@@ -1,7 +1,9 @@
 code-test
 =========
 
-**Pasos para instalar y ejecutar esta prueba** 
+**Steps to run this app:**
+
+Clone the repository, install dependencies via composer
 
     git clone https://github.com/andres-mesa/code-test.git
     
@@ -9,22 +11,22 @@ code-test
     
     composer install
 
-En el directorio raiz del proyecto, crear BBDD y actualizar el esquema:
+While prompt to fulfill the database parameters keep the default values, then:
 
     php bin/console doctrine:database:create
 
     php bin/console doctrine:schema:update --force
 
-Cargar datos de prueba
+Load DataFixtures
 
     php bin/console doctrine:fixtures:load
     
-Test unitarios 
+Unit tests
     
     phpunit
     
     
-**Notas**
+**Notes**
 
-Requiere PHP 7.1
+Requires PHP 7.1
 

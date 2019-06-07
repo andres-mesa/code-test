@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * Load data fixtures //
+     * Load data fixtures
      * @param ObjectManager $manager
      * @throws \Exception
      */
@@ -100,7 +100,7 @@ class AppFixtures extends Fixture
             $shops =  $manager->getRepository(Shop::class)->findAll();
             $randomShops = array_rand($shops, rand(1,count($shops)));
 
-            //Creamos las relaciones
+            //Relate with some products
             if(is_array($randomShops)){
                 foreach ($randomShops as $shop){
                     $productsShops = new ProductsShops();
@@ -118,16 +118,16 @@ class AppFixtures extends Fixture
             }
         }
 
-        //Crear 10 Pedidos
+        //10 Orders
         for ($i = 0; $i < 10; $i++) {
 
             $order = new Order();
             $order->setPhone(strval(918493100 + $i));
 
             //Order date & Delivery Date
-            $hoy = new \DateTime('now');
-            $order->setOrderDate($hoy);
-            $order->setDeliveryDate($hoy->add(new \DateInterval('P1D')));
+            $today = new \DateTime('now');
+            $order->setOrderDate($today);
+            $order->setDeliveryDate($today->add(new \DateInterval('P1D')));
             $order->setOrigin("iOS");
 
             //Random user
@@ -140,16 +140,18 @@ class AppFixtures extends Fixture
             $randomAddress = array_rand($addresses, 1);
             $order->setAddress($addresses[$randomAddress]);
 
-            $fullName = $order->getCustomer()->getName(). " " .$order->getCustomer()->getSurname1(). " " .$order->getCustomer()->getSurname2();
-            $order->setNombreCompleto($fullName);
+            //Full name, email and full address
+            $customer = $order->getCustomer();
+            $fullName = $customer->getName(). " " .$customer->getSurname1(). " " .$customer->getSurname2();
+            $order->setFullName($fullName);
 
-            $email = $order->getCliente()->getEmail();
+            $email = $order->getCustomer()->getEmail();
             $order->setEmail($email);
 
             $deliveryAddress = $order->getAddress()->getStreet() . " " . $order->getAddress()->getCity() . " " . $order->getAddress()->getZipCode();
-            $order->getAddress($deliveryAddress);
+            $order->setDeliveryAddress($deliveryAddress);
 
-            $order->setDeliverySlotID(rand(0,10));
+            $order->setDeliverySlotId(rand(0,10));
             $order->setTotal(0.0);
 
             $manager->persist($order);
@@ -169,7 +171,7 @@ class AppFixtures extends Fixture
                     $orderLine->setOrder($order);
                     $orderLine->setShop($shop);
                     $orderLine->setUnits(rand(1,10));
-                    $orderLine->setProduct($avariableProductsInShop[$shopProduct]->getProducto());
+                    $orderLine->setProduct($avariableProductsInShop[$shopProduct]->getProduct());
                     $manager->persist($orderLine);
                     $manager->flush();
                 }
@@ -194,10 +196,10 @@ class AppFixtures extends Fixture
 
         //From all the shops, empty the shopper at least in one case to easy testing the dispatch endpoint
         foreach ($shops as $shop){
-            $productLine = $manager->getRepository(OrderLines::class)->findBy(array("tienda"=>$shop));
-            foreach ($productLine as $linea){
-                $linea->setShopper(null);
-                $manager->persist($linea);
+            $productLine = $manager->getRepository(OrderLines::class)->findBy(array("shop"=>$shop));
+            foreach ($productLine as $line){
+                $line->setShopper(null);
+                $manager->persist($line);
                 $manager->flush();
                 break;
             }

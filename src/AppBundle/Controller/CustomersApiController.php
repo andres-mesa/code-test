@@ -15,14 +15,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class CustomerApiController
+ * Class CustomersApiController
  * @package AppBundle\Controller
  */
-class CustomerApiController extends Controller
+class CustomersApiController extends Controller
 {
     /**
      * API action to perform a new Order
-     * @Post("/customerapi/v1/order")
+     * @Post("/customersapi/v1/order")
      * @param Request $request
      * @return JsonResponse
      * @throws \Exception
@@ -47,13 +47,13 @@ class CustomerApiController extends Controller
         try {
             $order->setPhone($orderData["phone"]);
             $order->setOrigin($orderData["origin"]);
-            $order->setDeliverySlotID($orderData["deliverySlotID"]);
+            $order->setDeliverySlotId($orderData["deliverySlotId"]);
             $order->setTotal(0.0);
             $order->setCustomer($customer);
 
 
-            $hoy = new \DateTime('now');
-            $order->setOrderDate($hoy);
+            $today = new \DateTime('now');
+            $order->setOrderDate($today);
             $order->setDeliveryDate(\DateTime::createFromFormat('Y-m-d', $orderData["deliveryDate"]));
 
             $fullName = $order->getCustomer()->getName() . " " .$order->getCustomer()->getSurname1() . " " .$order->getCustomer()->getSurname2();
@@ -63,7 +63,7 @@ class CustomerApiController extends Controller
             $order->setEmail($email);
 
             //Find the address
-            $address = $this->getDoctrine()->getRepository(Address::class)->findBy(array("customer"=>$order->getCustomer()->getId()));
+            $address = $this->getDoctrine()->getRepository(Address::class)->findOneBy(array("customer"=>$order->getCustomer()->getId()));
             $order->setAddress($address);
 
             $deliveryAddress = $order->getAddress()->getStreet() . " " . $order->getAddress()->getCity() . " " . $order->getAddress()->getZipCode();
@@ -74,16 +74,16 @@ class CustomerApiController extends Controller
 
 
             //Fill product lines
-            foreach ($orderData["products"] as $orderLines){
+            foreach ($orderData["products"] as $orderLineItem){
 
-                $shop = $manager->getRepository(Shop::class)->find($orderLines["shop"]);
-                $product = $manager->getRepository(Product::class)->find($orderLines["product"]);
+                $shop = $manager->getRepository(Shop::class)->find($orderLineItem["shopId"]);
+                $product = $manager->getRepository(Product::class)->find($orderLineItem["productId"]);
 
                 $orderLine = new OrderLines();
                 $orderLine->setOrder($order);
                 $orderLine->setShop($shop);
                 $orderLine->setProduct($product);
-                $orderLine->setUnit($orderLines["units"]);
+                $orderLine->setUnits(intval($orderLineItem["units"]));
                 $manager->persist($orderLine);
                 $manager->flush();
             }
@@ -100,7 +100,7 @@ class CustomerApiController extends Controller
 
     /**
      * Avariable shops
-     * @Get("/customerapi/v1/shops")
+     * @Get("/customersapi/v1/shops")
      * @return Response
      */
     public function getTiendasDisponibles()
@@ -108,24 +108,23 @@ class CustomerApiController extends Controller
         $manager = $this->getDoctrine()->getManager();
         $shops =  $manager->getRepository(Shop::class)->findAll();
 
-        $respuesta = array();
-        foreach ($shops as $tienda){
+        $response = array();
+        foreach ($shops as $shop){
             $temp = array();
-            $temp["id"] = $tienda->getIdTienda();
-            $temp["nombre"] = $tienda->getNombre();
-            $respuesta[] = $temp;
+            $temp["id"] = $shop->getId();
+            $temp["nombre"] = $shop->getName();
+            $response[] = $temp;
         }
 
         $serializer = $this->container->get('jms_serializer');
-        $json = $serializer->serialize($respuesta, 'json');
+        $json = $serializer->serialize($response, 'json');
 
-        //Devolvemos la respuesta
         return new Response($json, 200);
     }
 
     /**
      * Avariable products in given shop
-     * @Get("/customerapi/v1/shops/{shop}/products")
+     * @Get("/customersapi/v1/shops/{shop}/products")
      * @param $shop integer identificador de la tienda
      * @return Response
      */
@@ -152,7 +151,7 @@ class CustomerApiController extends Controller
 
     /**
      * Avariable addresses for current customer
-     * @Get("/customerapi/v1/customer/addresses")
+     * @Get("/customersapi/v1/customer/addresses")
      * @return Response
      */
     public function getAvariableAddresses()
@@ -172,10 +171,10 @@ class CustomerApiController extends Controller
         $response = array();
         foreach ($addresses as $address){
             $temp = array();
-            $temp["addressId"]  = $address->getIdDireccion();
-            $temp["street"]     = $address->getCalle();
-            $temp["zipCode"]    = $address->getCodPostal();
-            $temp["city"]       = $address->getLocalidad();;
+            $temp["addressId"]  = $address->getId();
+            $temp["street"]     = $address->getStreet();
+            $temp["zipCode"]    = $address->getZipCode();
+            $temp["city"]       = $address->getCity();;
             $response[]         = $temp;
         }
 

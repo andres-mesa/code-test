@@ -9,14 +9,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class ShopperApiController
+ * Class ShoppersApiController
  * @package AppBundle\Controller
  */
-class ShopperApiController extends Controller
+class ShoppersApiController extends Controller
 {
     /**
-     * Gets shopper id and shop id, returns json response with all the products a shopper will have to buy
-     * @Get("/shoppersapi/v1/dispatchOrders/{shopper}/shops/{shop}")
+     * Gets shopper id and shop id, returns json response with all the products a shopper will have to buy in the current shop
+     * @Get("/shoppersapi/v1/dispatchorders/{shopper}/shops/{shop}")
      * @param $shopper integer the shopper that is requesting the product list
      * @param $shop integer the shop the shopper is interested in
      * @return Response
@@ -30,8 +30,8 @@ class ShopperApiController extends Controller
             return new JsonResponse(array('code' => '400', 'content'=> 'User not found'));
         }
 
-        if(intval($shopper) !== $user->getIdShopper()){
-            return new JsonResponse(array('code' => '400', 'content'=> 'You cannot see other shopper order lines'));
+        if(intval($shopper) !== $user->getId()){
+            return new JsonResponse(array('code' => '400', 'content'=> 'You cannot see other shoppers dispatches'));
         }
 
         //Obtenemos las lineas de pedido que no tienen asignado un shopper en la tienda concreta
@@ -82,7 +82,7 @@ class ShopperApiController extends Controller
 
     /**
      * Shopper personal information
-     * @Get("/shopperapi/v1/shopper")
+     * @Get("/shoppersapi/v1/shopper")
      * @return Response
      */
     public function getShopperData()

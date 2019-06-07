@@ -1,6 +1,6 @@
 <?php
-
 namespace AppBundle\Entity;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -136,7 +136,7 @@ class Customer implements UserInterface
      */
     public function getSurname2(): string
     {
-        return $this->getSurname2();
+        return $this->surname2;
     }
 
     /**

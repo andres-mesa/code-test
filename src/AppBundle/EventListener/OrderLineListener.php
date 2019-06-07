@@ -5,13 +5,13 @@ use AppBundle\Entity\OrderLines;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
- * Class ControlPedidoListener
+ * Class OrderLineListener
  * @package AppBundle\EventListener
  */
-class ControlPedidoListener
+class OrderLineListener
 {
     /**
-     * Evento para actualizar el valor de un pedido tras una inserción en LineasPedido
+     * Lifecycle event triggered after persist, controls order total price
      * @param LifecycleEventArgs $args
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -20,21 +20,21 @@ class ControlPedidoListener
     {
         $entity = $args->getEntity();
         if ($entity instanceof OrderLines) {
-            $pedido = $entity->getPedido();
-            $producto = $entity->getProducto();
-            $unidades = $entity->getUnidades();
+            $order = $entity->getOrder();
+            $product = $entity->getProduct();
+            $units = $entity->getUnits();
 
-            $incrementoPrecio = $producto->getPrecio() * $unidades;
-            $pedido->setImporteTotal($pedido->getImporteTotal() + $incrementoPrecio);
+            $addedPrice = $product->getPrice() * $units;
+            $order->setTotal($order->getTotal() + $addedPrice);
             $em = $args->getEntityManager();
-            $em->persist($pedido);
+            $em->persist($order);
             $em->flush();
 
         }
     }
 
     /**
-     * Evento para actualizar el valor total del pedido al borrar una linea en LineasPedido
+     * Lifecycle event triggered before remove, controls order total price
      * @param LifecycleEventArgs $args
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -43,15 +43,16 @@ class ControlPedidoListener
     {
         $entity = $args->getEntity();
         if ($entity instanceof OrderLines) {
-            $pedido = $entity->getPedido();
-            $producto = $entity->getProducto();
-            $unidades = $entity->getUnidades();
+            $order = $entity->getOrder();
+            $product = $entity->getProduct();
+            $units = $entity->getUnits();
 
-            $decrementoPrecio = $producto->getPrecio() * $unidades;
-            $pedido->setImporteTotal($pedido->getImporteTotal() - $decrementoPrecio);
+            $addedPrice = $product->getPrice() * $units;
+            $order->setTotal($order->getTotal() - $addedPrice);
             $em = $args->getEntityManager();
-            $em->persist($pedido);
+            $em->persist($order);
             $em->flush();
+
         }
     }
 }
