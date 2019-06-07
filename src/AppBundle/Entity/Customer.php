@@ -1,49 +1,47 @@
 <?php
 
 namespace AppBundle\Entity;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * Cliente/Usuario de la aplicacion
+ * Customer/User of LolaMarket
  *
- * @ORM\Table(name="cliente")
+ * @ORM\Table(name="customer")
  * @ORM\Entity
  */
-class Cliente implements UserInterface
+class Customer implements UserInterface
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="idCliente", type="integer")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $idCliente;
+    private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
-    private $nombre;
+    private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="apellido1", type="string", length=255, nullable=true)
+     * @ORM\Column(name="surname1", type="string", length=255, nullable=true)
      */
-    private $apellido1;
+    private $surname1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="apellido2", type="string", length=255, nullable=true)
+     * @ORM\Column(name="surname2", type="string", length=255, nullable=true)
      */
-    private $apellido2;
+    private $surname2;
 
     /**
      * @var string
@@ -64,16 +62,16 @@ class Cliente implements UserInterface
     private $password;
 
     /**
-     * Un Cliente tiene muchos pedidos.
-     * @ORM\OneToMany(targetEntity="Pedido", mappedBy="cliente")
+     * A customer has many orders
+     * @ORM\OneToMany(targetEntity="Order", mappedBy="customer")
      */
-    private $pedidos;
+    private $orders;
 
     /**
-     * Un Cliente tiene muchas direcciones.
-     * @ORM\OneToMany(targetEntity="Direccion", mappedBy="cliente")
+     * A customer has many addresses
+     * @ORM\OneToMany(targetEntity="Address", mappedBy="customer")
      */
-    private $direcciones;
+    private $addresses;
 
 
     /**
@@ -81,72 +79,72 @@ class Cliente implements UserInterface
      */
     public function __construct()
     {
-        $this->pedidos = new ArrayCollection();
-        $this->direcciones = new ArrayCollection();
+        $this->orders = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
     /**
      * @return int
      */
-    public function getIdCliente(): int
+    public function getId(): int
     {
-        return $this->idCliente;
+        return $this->id;
     }
 
     /**
-     * @param int $idCliente
+     * @param int $id
      */
-    public function setIdCliente(int $idCliente): void
+    public function setId(int $id): void
     {
-        $this->idCliente = $idCliente;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNombre(): string
-    {
-        return $this->nombre;
-    }
-
-    /**
-     * @param string $nombre
-     */
-    public function setNombre(string $nombre): void
-    {
-        $this->nombre = $nombre;
+        $this->id = $id;
     }
 
     /**
      * @return string
      */
-    public function getApellido1(): string
+    public function getName(): string
     {
-        return $this->apellido1;
+        return $this->name;
     }
 
     /**
-     * @param string $apellido1
+     * @param string $name
      */
-    public function setApellido1(string $apellido1): void
+    public function setName(string $name): void
     {
-        $this->apellido1 = $apellido1;
+        $this->name = $name;
     }
 
     /**
      * @return string
      */
-    public function getApellido2(): string
+    public function getSurname1(): string
     {
-        return $this->apellido2;
+        return $this->surname1;
     }
 
     /**
-     * @param string $apellido2
+     * @param string $surname1
      */
-    public function setApellido2(string $apellido2): void
+    public function setSurname1(string $surname1): void
     {
-        $this->apellido2 = $apellido2;
+        $this->surname1 = $surname1;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname2(): string
+    {
+        return $this->getSurname2();
+    }
+
+    /**
+     * @param string $surname2
+     */
+    public function setSurname2(string $surname2): void
+    {
+        $this->surname2 = $surname2;
     }
 
     /**
@@ -168,33 +166,33 @@ class Cliente implements UserInterface
     /**
      * @return mixed
      */
-    public function getPedidos()
+    public function getOrders()
     {
-        return $this->pedidos;
+        return $this->orders;
     }
 
     /**
-     * @param mixed $pedidos
+     * @param mixed $orders
      */
-    public function setPedidos($pedidos): void
+    public function setOrders($orders): void
     {
-        $this->pedidos = $pedidos;
+        $this->orders = $orders;
     }
 
     /**
      * @return mixed
      */
-    public function getDirecciones()
+    public function getAddresses()
     {
-        return $this->direcciones;
+        return $this->addresses;
     }
 
     /**
-     * @param mixed $direcciones
+     * @param mixed $addresses
      */
-    public function setDirecciones($direcciones): void
+    public function setAddresses($addresses): void
     {
-        $this->direcciones = $direcciones;
+        $this->addresses = $addresses;
     }
 
     /**

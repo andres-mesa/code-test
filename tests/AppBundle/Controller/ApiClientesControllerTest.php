@@ -2,9 +2,7 @@
 
 namespace AppBundle\Tests\Controller;
 
-use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use JMS\Serializer\Builder;
 
 /**
  * Class ApiClientesControllerTest

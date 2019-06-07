@@ -2,13 +2,14 @@
 namespace AppBundle\DataFixtures;
 
 use AppBundle\Entity\Cliente;
-use AppBundle\Entity\Direccion;
-use AppBundle\Entity\LineasPedido;
-use AppBundle\Entity\Pedido;
-use AppBundle\Entity\Producto;
+use AppBundle\Entity\Address;
+use AppBundle\Entity\Customer;
+use AppBundle\Entity\OrderLines;
+use AppBundle\Entity\Order;
+use AppBundle\Entity\Product;
 use AppBundle\Entity\Shopper;
-use AppBundle\Entity\Tienda;
-use AppBundle\Entity\TiendasProductos;
+use AppBundle\Entity\Shop;
+use AppBundle\Entity\ProductsShops;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -20,7 +21,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class AppFixtures extends Fixture
 {
     /**
-     * Variable inyectada para poder usar el codificador tanto en clientes como en shoppers (Misma función de codificación
+     * Inyected variable to encode the user and shopper password (same algorithm)
      * @var UserPasswordEncoderInterface
      */
     private $encoder;
@@ -35,40 +36,40 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * Carga datos de prueba en el sistema
+     * Load data fixtures //
      * @param ObjectManager $manager
      * @throws \Exception
      */
     public function load(ObjectManager $manager)
     {
 
-        //Crear 20 clientes y sus direcciones
+        //20 customers and their addresses
         for ($i = 0; $i < 20; $i++) {
-            $cliente = new Cliente();
-            $cliente->setNombre("Nombre ".$i);
-            $cliente->setApellido1("Apellido ".$i);
-            $cliente->setApellido2("Apellido ".$i);
-            $cliente->setEmail("cliente".$i."@lolamarket.com");
-            $cliente->setRoles(array('ROLE_USER'));
-            $password = $this->encoder->encodePassword($cliente, 'lolamarket'); //para facilitar el testing, asignamos el mismo pass a todos los usuarios
-            $cliente->setPassword($password);
+            $customer = new Customer();
+            $customer->setName("Name ".$i);
+            $customer->setSurname1("Surname ".$i);
+            $customer->setSurname2("Surname ".$i);
+            $customer->setEmail("customer".$i."@lolamarket.com");
+            $customer->setRoles(array('ROLE_USER'));
+            $password = $this->encoder->encodePassword($customer, 'lolamarket'); //Same password for all for test purposes
+            $customer->setPassword($password);
 
 
-            $direccion = new Direccion();
-            $direccion->setCliente($cliente);
-            $direccion->setCalle("Calle ". $i);
-            $direccion->setCodPostal(strval(28000 + $i));
-            $direccion->setLocalidad("Localidad ". $i);
+            $address = new Address();
+            $address->setCustomer($customer);
+            $address->setStreet("Street ". $i);
+            $address->setZipCode(strval(28000 + $i));
+            $address->setCity("City ". $i);
 
-            $manager->persist($cliente);
-            $manager->persist($direccion);
+            $manager->persist($customer);
+            $manager->persist($address);
             $manager->flush();
         }
 
-        //Crear 20 Shoppers
+        //20 Shoppers
         for ($i = 0; $i < 20; $i++) {
             $shopper = new Shopper();
-            $shopper->setNombre("Nombre ".$i);
+            $shopper->setName("Name ".$i);
             $shopper->setEmail("shopper".$i."@lolamarket.com");
             $shopper->setRoles(array('ROLE_USER'));
             $password = $this->encoder->encodePassword($shopper, 'lolamarket');
@@ -76,43 +77,43 @@ class AppFixtures extends Fixture
             $manager->persist($shopper);
         }
 
-        //Crear 5 Tiendas
+        //5 Shops
         for ($i = 0; $i < 5; $i++) {
-            $tienda = new Tienda();
-            $tienda->setNombre("Nombre ".$i);
-            $tienda->setDireccion("Direccion ".$i);
-            $manager->persist($tienda);
+            $shop = new Shop();
+            $shop->setName("Name ".$i);
+            $shop->setShopAddress("Address ".$i);
+            $manager->persist($shop);
         }
 
         $manager->flush();
 
-        //Crear 50 productos y relacionarlos con algunas tiendas
+        //50 products and relations with some shops
         for ($i = 0; $i < 50; $i++) {
-            $producto = new Producto();
-            $producto->setNombre("Producto " . $i);
-            $producto->setDescripcion("Descripción ".$i);
-            $producto->setPrecio(mt_rand (0*10, 50*10) / 10);
-            $manager->persist($producto);
+            $product = new Product();
+            $product->setName("Product " . $i);
+            $product->setDescription("Description ".$i);
+            $product->setPrice(mt_rand (0*10, 50*10) / 10);
+            $manager->persist($product);
             $manager->flush();
 
-            //Seleccionamos las tiendas
-            $tiendas =  $manager->getRepository(Tienda::class)->findAll();
-            $tiendasAleatorias = array_rand($tiendas, rand(1,count($tiendas)));
+            //Select some shops
+            $shops =  $manager->getRepository(Shop::class)->findAll();
+            $randomShops = array_rand($shops, rand(1,count($shops)));
 
             //Creamos las relaciones
-            if(is_array($tiendasAleatorias)){
-                foreach ($tiendasAleatorias as $tienda){
-                    $tiendaProducto = new TiendasProductos();
-                    $tiendaProducto->setProducto($producto);
-                    $tiendaProducto->setTienda($tiendas[$tienda]);
-                    $manager->persist($tiendaProducto);
+            if(is_array($randomShops)){
+                foreach ($randomShops as $shop){
+                    $productsShops = new ProductsShops();
+                    $productsShops->setProduct($product);
+                    $productsShops->setShop($shops[$shop]);
+                    $manager->persist($productsShops);
                     $manager->flush();
                 }
             }else{
-                $tiendaProducto = new TiendasProductos();
-                $tiendaProducto->setProducto($producto);
-                $tiendaProducto->setTienda($tiendas[$tiendasAleatorias]);
-                $manager->persist($tiendaProducto);
+                $productsShops = new ProductsShops();
+                $productsShops->setProduct($product);
+                $productsShops->setShop($shops[$randomShops]);
+                $manager->persist($productsShops);
                 $manager->flush();
             }
         }
@@ -120,81 +121,81 @@ class AppFixtures extends Fixture
         //Crear 10 Pedidos
         for ($i = 0; $i < 10; $i++) {
 
-            $pedido = new Pedido();
-            $pedido->setTelefono(strval(918493100 + $i));
+            $order = new Order();
+            $order->setPhone(strval(918493100 + $i));
 
-            //Indicamos la fecha del pedido y la fecha de entrega
+            //Order date & Delivery Date
             $hoy = new \DateTime('now');
-            $pedido->setFechaCompra($hoy);
-            $pedido->setFechaEntrega($hoy->add(new \DateInterval('P1D')));
-            $pedido->setOrigen("iOS");
+            $order->setOrderDate($hoy);
+            $order->setDeliveryDate($hoy->add(new \DateInterval('P1D')));
+            $order->setOrigin("iOS");
 
-            //Obtenemos un cliente aleatorio
-            $clientes =  $manager->getRepository(Cliente::class)->findAll();
-            $unClienteAleatorio = array_rand($clientes, 1);
-            $pedido->setCliente($clientes[$unClienteAleatorio]);
+            //Random user
+            $customers =  $manager->getRepository(Customer::class)->findAll();
+            $randomCustomer = array_rand($customers, 1);
+            $order->setCustomer($customers[$randomCustomer]);
 
-            //Una direccion aleatoria de ese cliente
-            $direcciones = $manager->getRepository(Direccion::class)->findBy(array("cliente"=>$pedido->getCliente()->getIdCliente()));
-            $unaDireccionAleatoriaAleatorio = array_rand($direcciones, 1);
-            $pedido->setDireccion($direcciones[$unaDireccionAleatoriaAleatorio]);
+            //Random address from the user
+            $addresses = $manager->getRepository(Address::class)->findBy(array("customer"=>$order->getCustomer()->getId()));
+            $randomAddress = array_rand($addresses, 1);
+            $order->setAddress($addresses[$randomAddress]);
 
-            $nombreCompleto = $pedido->getCliente()->getNombre() . " " .$pedido->getCliente()->getApellido1() . " " .$pedido->getCliente()->getApellido2();
-            $pedido->setNombreCompleto($nombreCompleto);
+            $fullName = $order->getCustomer()->getName(). " " .$order->getCustomer()->getSurname1(). " " .$order->getCustomer()->getSurname2();
+            $order->setNombreCompleto($fullName);
 
-            $email = $pedido->getCliente()->getEmail();
-            $pedido->setEmail($email);
+            $email = $order->getCliente()->getEmail();
+            $order->setEmail($email);
 
-            $direccionEntrega = $pedido->getDireccion()->getCalle() . " " . $pedido->getDireccion()->getLocalidad() . " " . $pedido->getDireccion()->getCodPostal();
-            $pedido->setDireccionEntrega($direccionEntrega);
+            $deliveryAddress = $order->getAddress()->getStreet() . " " . $order->getAddress()->getCity() . " " . $order->getAddress()->getZipCode();
+            $order->getAddress($deliveryAddress);
 
-            $pedido->setIdFranjaEntrega(rand(0,10));
-            $pedido->setImporteTotal(0.0);
+            $order->setDeliverySlotID(rand(0,10));
+            $order->setTotal(0.0);
 
-            $manager->persist($pedido);
+            $manager->persist($order);
             $manager->flush();
 
-            //Asignamos unas cuantas lineas de pedido
-            $tiendas =  $manager->getRepository(Tienda::class)->findAll();
-            $tiendasAleatorias = array_rand($tiendas, rand(2,count($tiendas)));
+            //Add shome random order lines
+            $shops =  $manager->getRepository(Shop::class)->findAll();
+            $randomShops = array_rand($shops, rand(2,count($shops)));
 
-            foreach ($tiendasAleatorias as $tiendasAleatoria){
-                $tienda = $tiendas[$tiendasAleatoria];
-                $productosDisponiblesEnTienda = $manager->getRepository(TiendasProductos::class)->findBy(array("tienda"=>$tienda));
-                $algunosProductosDeLaTienda = array_rand($productosDisponiblesEnTienda, rand(2,count($productosDisponiblesEnTienda)));
+            foreach ($randomShops as $randomShop){
+                $shop = $shops[$randomShop];
+                $avariableProductsInShop = $manager->getRepository(ProductsShops::class)->findBy(array("shop"=>$shop));
+                $shomeRandomProducts = array_rand($avariableProductsInShop, rand(2,count($avariableProductsInShop)));
 
-                foreach ($algunosProductosDeLaTienda as $productoTienda){
-                    $lineaPedido = new LineasPedido();
-                    $lineaPedido->setPedido($pedido);
-                    $lineaPedido->setTienda($tienda);
-                    $lineaPedido->setUnidades(rand(1,10));
-                    $lineaPedido->setProducto($productosDisponiblesEnTienda[$productoTienda]->getProducto());
-                    $manager->persist($lineaPedido);
+                foreach ($shomeRandomProducts as $shopProduct){
+                    $orderLine = new OrderLines();
+                    $orderLine->setOrder($order);
+                    $orderLine->setShop($shop);
+                    $orderLine->setUnits(rand(1,10));
+                    $orderLine->setProduct($avariableProductsInShop[$shopProduct]->getProducto());
+                    $manager->persist($orderLine);
                     $manager->flush();
                 }
             }
         }
 
-        //Asignamos a los shopper lineas de pedido
-        $tiendas  =  $manager->getRepository(Tienda::class)->findAll();
+        //Link the shoppers with some products
+        $shops  =  $manager->getRepository(Shop::class)->findAll();
         $shoppers =  $manager->getRepository(Shopper::class)->findAll();
 
-        //Obtenemos una tienda aleatoria, buscamos las lineas que lo componen y asignamos al shopper si no lo tienen
+        //Get random shop, search some lines y link the shopper if it's not
         foreach ($shoppers as $shopper){
-            $tiendaAleatoria = array_rand($tiendas, 1);
-            $lineasPedidoSinShopper = $manager->getRepository(LineasPedido::class)->findBy(array("tienda"=>$tiendas[$tiendaAleatoria], "shopper"=> null));
+            $randomShop = array_rand($shops, 1);
+            $orderLinesWithoutShopper = $manager->getRepository(OrderLines::class)->findBy(array("shop"=>$shops[$randomShop], "shopper"=> null));
 
-            foreach ($lineasPedidoSinShopper as $lineaPedido){
-                $lineaPedido->setShopper($shopper);
-                $manager->persist($lineaPedido);
+            foreach ($orderLinesWithoutShopper as $orderLine){
+                $orderLine->setShopper($shopper);
+                $manager->persist($orderLine);
             }
             $manager->flush();
         }
 
-        //De cada tienda dejamos una linea de pedido sin shopper para poder probar el endpoint de dispatch
-        foreach ($tiendas as $tienda){
-            $lineasPedido = $manager->getRepository(LineasPedido::class)->findBy(array("tienda"=>$tienda));
-            foreach ($lineasPedido as $linea){
+        //From all the shops, empty the shopper at least in one case to easy testing the dispatch endpoint
+        foreach ($shops as $shop){
+            $productLine = $manager->getRepository(OrderLines::class)->findBy(array("tienda"=>$shop));
+            foreach ($productLine as $linea){
                 $linea->setShopper(null);
                 $manager->persist($linea);
                 $manager->flush();

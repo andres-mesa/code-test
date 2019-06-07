@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Shopper
+ * LolaMarket Shopper
  *
  * @ORM\Table(name="shopper")
  * @ORM\Entity
@@ -17,18 +17,18 @@ class Shopper implements UserInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="idShopper", type="integer")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $idshopper;
+    private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=50, nullable=true)
+     * @ORM\Column(name="name", type="string", length=50, nullable=true)
      */
-    private $nombre;
+    private $name;
 
     /**
      * @var string
@@ -51,77 +51,69 @@ class Shopper implements UserInterface
 
     /**
      * Un Shopper tiene asignadas muchas lineas de pedido.
-     * @ORM\OneToMany(targetEntity="LineasPedido", mappedBy="shopper")
+     * @ORM\OneToMany(targetEntity="OrderLines", mappedBy="shopper")
      */
-    private $lineasPedido;
+    private $orderLines;
 
 
     public function __construct() {
-        $this->lineasPedido = new ArrayCollection();
+        $this->orderLines = new ArrayCollection();
     }
 
     /**
      * @return int
      */
-    public function getIdshopper(): int
-    {
-        return $this->idshopper;
+    public function getId(): int {
+        return $this->id;
     }
 
     /**
-     * @param int $idshopper
+     * @param int $id
      */
-    public function setIdshopper(int $idshopper): void
-    {
-        $this->idshopper = $idshopper;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNombre(): string
-    {
-        return $this->nombre;
-    }
-
-    /**
-     * @param string $nombre
-     */
-    public function setNombre(string $nombre): void
-    {
-        $this->nombre = $nombre;
+    public function setId(int $id): void {
+        $this->id = $id;
     }
 
     /**
      * @return string
      */
-    public function getEmail(): string
-    {
+    public function getName(): string {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string {
         return $this->email;
     }
 
     /**
      * @param string $email
      */
-    public function setEmail(string $email): void
-    {
+    public function setEmail(string $email): void {
         $this->email = $email;
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection<OrderLines>
      */
-    public function getLineasPedido()
-    {
-        return $this->lineasPedido;
+    public function getOrderLines() {
+        return $this->orderLines;
     }
 
     /**
-     * @param mixed $lineasPedido
+     * @param ArrayCollection<OrderLines> $orderLines
      */
-    public function setLineasPedido($lineasPedido): void
-    {
-        $this->lineasPedido = $lineasPedido;
+    public function setOrderLines($orderLines): void {
+        $this->orderLines = $orderLines;
     }
 
     /**

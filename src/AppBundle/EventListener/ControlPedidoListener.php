@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\EventListener;
 
-use AppBundle\Entity\LineasPedido;
+use AppBundle\Entity\OrderLines;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
@@ -19,7 +19,7 @@ class ControlPedidoListener
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($entity instanceof LineasPedido) {
+        if ($entity instanceof OrderLines) {
             $pedido = $entity->getPedido();
             $producto = $entity->getProducto();
             $unidades = $entity->getUnidades();
@@ -42,7 +42,7 @@ class ControlPedidoListener
     public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($entity instanceof LineasPedido) {
+        if ($entity instanceof OrderLines) {
             $pedido = $entity->getPedido();
             $producto = $entity->getProducto();
             $unidades = $entity->getUnidades();
