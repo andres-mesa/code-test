@@ -55,7 +55,7 @@ class Product
     private $productsShops;
 
     /**
-     * Producto constructor.
+     * Product constructor.
      */
     public function __construct() {
         $this->orderLines = new ArrayCollection();

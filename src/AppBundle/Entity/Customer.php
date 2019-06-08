@@ -75,7 +75,7 @@ class Customer implements UserInterface
 
 
     /**
-     * Constructor de clase
+     * Customer constructor
      */
     public function __construct()
     {

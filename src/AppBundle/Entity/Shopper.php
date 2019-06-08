@@ -49,7 +49,7 @@ class Shopper implements UserInterface
 
 
     /**
-     * Un Shopper tiene asignadas muchas lineas de pedido.
+     * One shopper is assigned to many Order Lines
      * @ORM\OneToMany(targetEntity="OrderLines", mappedBy="shopper")
      */
     private $orderLines;

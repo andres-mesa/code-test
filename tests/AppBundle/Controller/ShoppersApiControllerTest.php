@@ -6,15 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class ShoppersApiControllerTest
- * Tests that control basic Shoppers API behaviour
+ * Tests basic Shoppers API behaviour
  * @package AppBundle\Tests\Controller
  */
 class ShoppersApiControllerTest extends WebTestCase
 {
     /**
-     * This test check that one shopper with good credentials can loggin into Customers API
+     * This test check that one shopper with good credentials can login into Customers API
      */
-    public function testShopperCanLoggin()
+    public function testShopperCanLogin()
     {
         $client = static::createClient();
         $client->request(
@@ -39,9 +39,9 @@ class ShoppersApiControllerTest extends WebTestCase
     }
 
     /**
-     * This test check that one customer with bad credentials cannot loggin into Customers API
+     * This test check that one customer with bad credentials cannot login into Customers API
      */
-    public function testShopperCannotLoggin()
+    public function testShopperCannotLogin()
     {
         $client = static::createClient();
         $client->request(
@@ -71,14 +71,14 @@ class ShoppersApiControllerTest extends WebTestCase
      */
     public function testDispatchOrder()
     {
-        $client = $this->shoppersLoggin();
+        $client = $this->shoppersLogin();
 
         //Get shopper data
         $client->request('GET', '/shoppersapi/v1/shopper');
         $shopper = json_decode($client->getResponse()->getContent());
         $shopperId = $shopper->shopperId;
 
-        //Get avariable shops
+        //Get available shops
         $client->request('GET', '/shoppersapi/v1/shops');
         $shops = json_decode($client->getResponse()->getContent());
 
@@ -97,12 +97,12 @@ class ShoppersApiControllerTest extends WebTestCase
     }
 
     /**
-     * Auxiliary function that for Shoppers loggin
+     * Auxiliary function that for Shoppers login
      * @param string $username
      * @param string $password
      * @return \Symfony\Bundle\FrameworkBundle\Client
      */
-    protected function shoppersLoggin($username = 'shopper0@lolamarket.com', $password = 'lolamarket')
+    protected function shoppersLogin($username = 'shopper0@lolamarket.com', $password = 'lolamarket')
     {
         $client = static::createClient();
         $client->request(

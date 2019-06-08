@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ShoppersApiController extends Controller
 {
     /**
-     * Gets shopper id and shop id, returns json response with all the products a shopper will have to buy in the current shop
+     * Get shopper id and shop id, returns json response with all the products the shopper will have to buy in the current shop
      * @Get("/shoppersapi/v1/dispatchorders/{shopper}/shops/{shop}")
      * @param $shopper integer the shopper that is requesting the product list
      * @param $shop integer the shop the shopper is interested in
@@ -23,7 +23,7 @@ class ShoppersApiController extends Controller
      */
     public function getDispatchOrderAction($shopper, $shop)
     {
-        //Comprobamos que el shopper esta autenticado y coincide con el shopper pedido
+        //Get the shopper token and check that the shopper has correct credentials
         $token = $this->container->get('security.token_storage')->getToken();
 
         if(!$token || !is_object($user = $token->getUser())){
@@ -34,12 +34,12 @@ class ShoppersApiController extends Controller
             return new JsonResponse(array('code' => '400', 'content'=> 'You cannot see other shoppers dispatches'));
         }
 
-        //Obtenemos las lineas de pedido que no tienen asignado un shopper en la tienda concreta
+        //Get the order lines not assigned to other shopper
         $manager = $this->getDoctrine()->getManager();
         $orderLinesNotAssigned = $manager->getRepository(OrderLines::class)->findBy(array("shop"=>$shop, "shopper"=> null), array('shop' => 'DESC'));
 
 
-        //Get the array that contains the avariable products, fill the data and return response
+        //Get the array that contains the available products, fill the data and return response
         $response = array();
         foreach ($orderLinesNotAssigned as $orderLineNotAssigned){
             $temp = array();
@@ -57,16 +57,16 @@ class ShoppersApiController extends Controller
     }
 
     /**
-     * Avariable shops
+     * Available shops
      * @Get("/shoppersapi/v1/shops")
      * @return Response
      */
-    public function getAvariableShops()
+    public function getAvailableShops()
     {
         $manager = $this->getDoctrine()->getManager();
         $shops =  $manager->getRepository(Shop::class)->findAll();
 
-        //Get the avariable shops and return JSON response
+        //Get the available shops and return JSON response
         $response = array();
         foreach ($shops as $shop){
             $temp = array();

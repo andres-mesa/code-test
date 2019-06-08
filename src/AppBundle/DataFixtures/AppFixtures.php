@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class AppFixtures extends Fixture
 {
     /**
-     * Inyected variable to encode the user and shopper password (same algorithm)
+     * Injected variable that allows to encode the user and shopper password (same algorithm)
      * @var UserPasswordEncoderInterface
      */
     private $encoder;
@@ -128,6 +128,7 @@ class AppFixtures extends Fixture
             $today = new \DateTime('now');
             $order->setOrderDate($today);
             $order->setDeliveryDate($today->add(new \DateInterval('P1D')));
+
             $order->setOrigin("iOS");
 
             //Random user
@@ -157,21 +158,21 @@ class AppFixtures extends Fixture
             $manager->persist($order);
             $manager->flush();
 
-            //Add shome random order lines
+            //Add some random order lines
             $shops =  $manager->getRepository(Shop::class)->findAll();
             $randomShops = array_rand($shops, rand(2,count($shops)));
 
             foreach ($randomShops as $randomShop){
                 $shop = $shops[$randomShop];
-                $avariableProductsInShop = $manager->getRepository(ProductsShops::class)->findBy(array("shop"=>$shop));
-                $shomeRandomProducts = array_rand($avariableProductsInShop, rand(2,count($avariableProductsInShop)));
+                $availableProductsInShop = $manager->getRepository(ProductsShops::class)->findBy(array("shop"=>$shop));
+                $someRandomProducts = array_rand($availableProductsInShop, rand(2,count($availableProductsInShop)));
 
-                foreach ($shomeRandomProducts as $shopProduct){
+                foreach ($someRandomProducts as $shopProduct){
                     $orderLine = new OrderLines();
                     $orderLine->setOrder($order);
                     $orderLine->setShop($shop);
                     $orderLine->setUnits(rand(1,10));
-                    $orderLine->setProduct($avariableProductsInShop[$shopProduct]->getProduct());
+                    $orderLine->setProduct($availableProductsInShop[$shopProduct]->getProduct());
                     $manager->persist($orderLine);
                     $manager->flush();
                 }
@@ -194,7 +195,7 @@ class AppFixtures extends Fixture
             $manager->flush();
         }
 
-        //From all the shops, empty the shopper at least in one case to easy testing the dispatch endpoint
+        //From all the shops, empty the shopperId at least in one case to easy testing the dispatch endpoint
         foreach ($shops as $shop){
             $productLine = $manager->getRepository(OrderLines::class)->findBy(array("shop"=>$shop));
             foreach ($productLine as $line){

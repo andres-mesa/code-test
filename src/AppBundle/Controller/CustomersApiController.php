@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 class CustomersApiController extends Controller
 {
     /**
-     * API action to perform a new Order
+     * API action to persist a new Order
      * @Post("/customersapi/v1/order")
      * @param Request $request
      * @return JsonResponse
@@ -40,7 +40,7 @@ class CustomersApiController extends Controller
         $customer = $token->getUser();
         $orderData = json_decode($request->getContent(), true);
 
-        //Create the new order
+        //Create the new Order
         $order = new Order();
         $manager = $this->getDoctrine()->getManager();
 
@@ -72,7 +72,6 @@ class CustomersApiController extends Controller
             $manager->persist($order);
             $manager->flush();
 
-
             //Fill product lines
             foreach ($orderData["products"] as $orderLineItem){
 
@@ -88,7 +87,7 @@ class CustomersApiController extends Controller
                 $manager->flush();
             }
 
-            return new JsonResponse(array("status" => "ok", "mensaje"=>"Order Ready"));
+            return new JsonResponse(array("status" => "ok", "message"=>"Order Ready"));
 
         } catch (\Exception $e) {
             $manager->remove($order);
@@ -99,11 +98,11 @@ class CustomersApiController extends Controller
 
 
     /**
-     * Avariable shops
+     * Available shops
      * @Get("/customersapi/v1/shops")
      * @return Response
      */
-    public function getTiendasDisponibles()
+    public function getAvailableShops()
     {
         $manager = $this->getDoctrine()->getManager();
         $shops =  $manager->getRepository(Shop::class)->findAll();
@@ -111,8 +110,8 @@ class CustomersApiController extends Controller
         $response = array();
         foreach ($shops as $shop){
             $temp = array();
-            $temp["id"] = $shop->getId();
-            $temp["nombre"] = $shop->getName();
+            $temp["shopId"] = $shop->getId();
+            $temp["name"] = $shop->getName();
             $response[] = $temp;
         }
 
@@ -123,24 +122,24 @@ class CustomersApiController extends Controller
     }
 
     /**
-     * Avariable products in given shop
+     * Available products in given shop
      * @Get("/customersapi/v1/shops/{shop}/products")
-     * @param $shop integer identificador de la tienda
+     * @param $shop integer shop id
      * @return Response
      */
-    public function getAvariableProducts($shop)
+    public function getAvailableProducts($shop)
     {
         $manager = $this->getDoctrine()->getManager();
-        $avariableProducts =  $manager->getRepository(ProductsShops::class)->findBy(array("shop"=>$shop));
+        $availableProducts =  $manager->getRepository(ProductsShops::class)->findBy(array("shop"=>$shop));
 
         $response = array();
-        foreach ($avariableProducts as $avariableProduct){
+        foreach ($availableProducts as $availableProduct){
             $temp = array();
-            $temp["shopId"]         = $avariableProduct->getShop()->getId();
-            $temp["productId"]      = $avariableProduct->getProduct()->getId();
-            $temp["productName"]    = $avariableProduct->getProduct()->getName();
-            $temp["description"]    = $avariableProduct->getProduct()->getDescription();
-            $temp["price"]          = $avariableProduct->getProduct()->getPrice();
+            $temp["shopId"]         = $availableProduct->getShop()->getId();
+            $temp["productId"]      = $availableProduct->getProduct()->getId();
+            $temp["productName"]    = $availableProduct->getProduct()->getName();
+            $temp["description"]    = $availableProduct->getProduct()->getDescription();
+            $temp["price"]          = $availableProduct->getProduct()->getPrice();
             $response[]             = $temp;
         }
 
@@ -150,11 +149,11 @@ class CustomersApiController extends Controller
     }
 
     /**
-     * Avariable addresses for current customer
+     * Available addresses for current customer
      * @Get("/customersapi/v1/customer/addresses")
      * @return Response
      */
-    public function getAvariableAddresses()
+    public function getAvailableAddresses()
     {
         //Get the security token
         $token = $this->container->get('security.token_storage')->getToken();
@@ -163,7 +162,7 @@ class CustomersApiController extends Controller
             return new JsonResponse(array('code' => '400', 'content'=> 'Usuario no encontrado'));
         }
 
-        //Get the client and fetch the avarible direction
+        //Get the client and fetch the available directions
         $customer = $token->getUser();
         $addresses = $customer->getAddresses();
 

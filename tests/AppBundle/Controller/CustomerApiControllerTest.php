@@ -6,16 +6,16 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class CustomerApiControllerTest
- * Tests that control Customer API basic behaviour
+ * Tests Customer API basic behaviour
  * @package AppBundle\Tests\Controller
  */
 class CustomerApiControllerTest extends WebTestCase
 {
 
     /**
-     * This test check that one customer with good credentials can loggin into Customers API
+     * This test check that one customer with good credentials can login into Customers API
      */
-    public function testCustomerCanLoggin()
+    public function testCustomerCanLogin()
     {
         $client = static::createClient();
         $client->request(
@@ -38,9 +38,9 @@ class CustomerApiControllerTest extends WebTestCase
     }
 
     /**
-     * This test check that one customer with bad credentials cannot loggin into Customers API
+     * This test check that one customer with bad credentials cannot login into Customers API
      */
-    public function testCustomerCannotLoggin()
+    public function testCustomerCannotLogin()
     {
         $client = static::createClient();
         $client->request(
@@ -68,27 +68,27 @@ class CustomerApiControllerTest extends WebTestCase
      */
     public function testPostOrder()
     {
-        $client = $this->customerLoggin();
+        $client = $this->customerLogin();
 
-        //Get avariable shops
+        //Get available shops
         $client->request('GET', '/customersapi/v1/shops');
         $shops = json_decode($client->getResponse()->getContent());
 
         //Get a random Shop
         $randomShop = array_rand($shops, 1);
-        $shopId = $shops[$randomShop]->id;
+        $shopId = $shops[$randomShop]->shopId;
 
-        //Get products avariable in the random shop
+        //Get products available in the random shop
         $client->request('GET', '/customersapi/v1/shops/'.$shopId."/products");
         $response = $client->getResponse();
-        $avariableProducts = json_decode($response->getContent(), true);
+        $availableProducts = json_decode($response->getContent(), true);
 
         //Get a valid customer address
         $client->request('GET', '/customersapi/v1/customer/addresses');
         $response = $client->getResponse();
         $addresses = json_decode($response->getContent(), true);
 
-        $someProducts = array_rand($avariableProducts, rand(2,count($avariableProducts)));
+        $someProducts = array_rand($availableProducts, rand(2,count($availableProducts)));
         $oneAddress = array_rand($addresses, 1);
 
         //New order array
@@ -101,15 +101,15 @@ class CustomerApiControllerTest extends WebTestCase
         $order["products"] = array();
 
 
-        foreach ($someProducts as $avariableProduct){
+        foreach ($someProducts as $availableProduct){
             $temp = array();
-            $temp["productId"]     = $avariableProducts[$avariableProduct]["productId"];
+            $temp["productId"]     = $availableProducts[$availableProduct]["productId"];
             $temp["units"]         = rand(1,5);
             $temp["shopId"]        = $shopId;
             $order["products"][]   = $temp;
         }
 
-        $jsonPedido = json_encode($order);
+        $orderJson = json_encode($order);
 
         $client->request(
             'POST',
@@ -117,7 +117,7 @@ class CustomerApiControllerTest extends WebTestCase
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
-            $jsonPedido
+            $orderJson
         );
 
 
@@ -132,12 +132,12 @@ class CustomerApiControllerTest extends WebTestCase
 
 
     /**
-     * Fución auxiliar que realiza la autenticación en el API
+     * Performs a customer Login
      * @param string $username
      * @param string $password
      * @return \Symfony\Bundle\FrameworkBundle\Client
      */
-    protected function customerLoggin($username = 'customer0@lolamarket.com', $password = 'lolamarket')
+    protected function customerLogin($username = 'customer0@lolamarket.com', $password = 'lolamarket')
     {
         $client = static::createClient();
         $client->request(

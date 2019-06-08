@@ -2,9 +2,9 @@ app:
     resource: '@AppBundle/Controller/'
     type: annotation
 
-api_clientes_login_check:
+customers_api_login_check:
     path: /customersapi/login_check
 
-api_shoppers_login_check:
+shoppers_api_login_check:
     path: /shoppersapi/login_check
 

@@ -4,7 +4,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ProductsShops
+ * ProductsShops relation
  *
  * @ORM\Table(name="products_shops")
  * @ORM\Entity
@@ -21,7 +21,7 @@ class ProductsShops
     private $id;
 
     /**
-     * Many Products are avariable in a shop
+     * Many Products are available in a shop
      * @var \AppBundle\Entity\Product
      *
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="productsShops")

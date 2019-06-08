@@ -34,7 +34,7 @@ class OrderLineListener
     }
 
     /**
-     * Lifecycle event triggered before remove, controls order total price
+     * Lifecycle event triggered before remove an order line, controls order total price
      * @param LifecycleEventArgs $args
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

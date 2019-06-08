@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Represents an avariable Shop to buy products
+ * Represents an available Shop to buy products
  *
  * @ORM\Table(name="shop")
  * @ORM\Entity
@@ -49,7 +49,7 @@ class Shop
     private $orderLines;
 
     /**
-     * Tienda constructor.
+     * Shop constructor
      */
     public function __construct() {
         $this->productsShops = new ArrayCollection();
